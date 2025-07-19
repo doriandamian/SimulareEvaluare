@@ -1,0 +1,25 @@
+<div class="filters-container">
+  <div class="filter-group">
+    <label class="filter-label">Unitate:</label>
+    <select
+      class="filter-select"
+      [(ngModel)]="selectedUnitate"
+      (change)="onChange()"
+    >
+      <option value="Toate">Toate</option>
+      <option *ngFor="let u of unitati" [value]="u">{{ u }}</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label class="filter-label">Specializare:</label>
+    <select
+      class="filter-select"
+      [(ngModel)]="selectedSpecializare"
+      (change)="onChange()"
+    >
+      <option value="Toate">Toate</option>
+      <option *ngFor="let s of specializari" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+</div>
