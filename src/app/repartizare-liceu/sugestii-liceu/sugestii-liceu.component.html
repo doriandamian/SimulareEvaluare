@@ -1,0 +1,10 @@
+<div *ngIf="candidati.length">
+  <h5 class="mt-3">Licee potrivite pentru media ta:</h5>
+  <div *ngFor="let c of candidati" class="card mt-2">
+    <div class="card-body">
+      <div [innerHTML]="c.h"></div>
+      <div [innerHTML]="c.sp"></div>
+      <div><small>Media de admitere: {{ c.madm }}</small></div>
+    </div>
+  </div>
+</div>

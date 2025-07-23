@@ -1,0 +1,11 @@
+<div *ngIf="statistici?.total">
+  <p>Datele au fost încărcate. Introdu o medie și apasă "Caută".</p>
+  <h5>Statistici pentru anul {{ year }}:</h5>
+  <ul>
+    <li><b>Număr total de candidați:</b> {{ statistici.total }}</li>
+    <li><b>Media generală de admitere:</b> {{ statistici.madm }}</li>
+    <li><b>Media la Română:</b> {{ statistici.romana }}</li>
+    <li><b>Media la Matematică:</b> {{ statistici.mate }}</li>
+    <li><b>Media generală de absolvire:</b> {{ statistici.absolvire }}</li>
+  </ul>
+</div>
