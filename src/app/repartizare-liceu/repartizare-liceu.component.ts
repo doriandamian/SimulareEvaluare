@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 import { DataService } from '../repartizare-liceu/services/data.service';
 import { Candidate } from '../repartizare-liceu/models/candidate.model';
+import { SugestiiLiceuComponent } from './sugestii-liceu/sugestii-liceu.component';
+import { StatisticsPanelComponent } from './statistics-panel/statistics-panel.component';
+import { RepartizareFormComponent } from './repartizare-form/repartizare-form.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-repartizare-liceu',
   templateUrl: './repartizare-liceu.component.html',
+  imports: [SugestiiLiceuComponent, StatisticsPanelComponent, RepartizareFormComponent, CommonModule],
+  standalone: true,
 })
 export class RepartizareLiceuComponent {
   candidati: Candidate[] = [];

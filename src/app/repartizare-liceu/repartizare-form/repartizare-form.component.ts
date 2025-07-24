@@ -1,8 +1,11 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-repartizare-form',
   templateUrl: './repartizare-form.component.html',
+  imports: [FormsModule],
+  standalone: true,
 })
 export class RepartizareFormComponent {
   selectedYear = 2024; 
