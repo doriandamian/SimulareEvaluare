@@ -40,12 +40,12 @@ export class ChartComponent {
   chartColors = [
     {
       backgroundColor: [
-        '#ef4444', 
-        '#f97316', 
+        '#ef4444',
+        '#f97316',
         '#eab308',
-        '#84cc16', 
-        '#22c55e', 
-        '#059669', 
+        '#84cc16',
+        '#22c55e',
+        '#059669',
       ],
     },
   ];

@@ -9,19 +9,19 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
 })
 export class RepartizareFormComponent {
-  selectedYear = 2024; 
-  medieAdmitere = ''; 
-  medieAbsolvire = ''; 
+  selectedYear = 2024;
+  medieAdmitere = '';
+  medieAbsolvire = '';
 
   @Output() search = new EventEmitter<{ year: number; madm: number; mabs?: number }>();
 
   onSubmit() {
-    const madm = parseFloat(this.medieAdmitere); 
-    const mabs = parseFloat(this.medieAbsolvire); 
+    const madm = parseFloat(this.medieAdmitere);
+    const mabs = parseFloat(this.medieAbsolvire);
     this.search.emit({
       year: this.selectedYear,
       madm,
-      mabs: isNaN(mabs) ? undefined : mabs, 
+      mabs: isNaN(mabs) ? undefined : mabs,
     });
   }
 }

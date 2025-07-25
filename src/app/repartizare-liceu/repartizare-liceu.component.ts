@@ -19,7 +19,7 @@ export class RepartizareLiceuComponent {
   statistici: any = {};
   selectedYear = 2024;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
   onSearch(data: { year: number; madm: number; mabs?: number }) {
     this.selectedYear = data.year;
@@ -41,5 +41,9 @@ export class RepartizareLiceuComponent {
   avg(values: number[]): number {
     const valid = values.filter(v => !isNaN(v));
     return +(valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(2);
+  }
+
+  goBack() {
+    history.back();
   }
 }

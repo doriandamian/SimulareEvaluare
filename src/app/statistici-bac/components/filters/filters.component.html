@@ -1,11 +1,7 @@
 <div class="filters-container">
   <div class="filter-group">
     <label class="filter-label">Unitate:</label>
-    <select
-      class="filter-select unitate-select"
-      [(ngModel)]="selectedUnitate"
-      (change)="onUnitateChange()"
-    >
+    <select class="filter-select unitate-select" [(ngModel)]="selectedUnitate" (change)="onUnitateChange()">
       <option value="Toate">Toate</option>
       <option *ngFor="let u of unitati" [value]="u">{{ u }}</option>
     </select>
@@ -13,11 +9,7 @@
 
   <div class="filter-group">
     <label class="filter-label">Specializare:</label>
-    <select
-      class="filter-select specializare-select"
-      [(ngModel)]="selectedSpecializare"
-      (change)="onChange()"
-    >
+    <select class="filter-select specializare-select" [(ngModel)]="selectedSpecializare" (change)="onChange()">
       <option value="Toate">Toate</option>
       <option *ngFor="let s of filteredSpecializari" [value]="s">{{ s }}</option>
     </select>

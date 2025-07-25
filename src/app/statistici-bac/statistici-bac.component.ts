@@ -21,7 +21,7 @@ export class StatisticiBACComponent {
 
   unitati: string[] = [];
 
-  constructor(private dataService: BacDataService) {}
+  constructor(private dataService: BacDataService) { }
 
   async ngOnInit() {
     this.rawData = await this.dataService.loadData();

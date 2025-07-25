@@ -5,11 +5,7 @@
   </div>
 
   <div class="filters-section">
-    <app-filters
-      [unitati]="unitati"
-      [rawData]="rawData"
-      (selectionChanged)="onFiltersChanged($event)"
-    >
+    <app-filters [unitati]="unitati" [rawData]="rawData" (selectionChanged)="onFiltersChanged($event)">
     </app-filters>
   </div>
 
@@ -21,9 +17,6 @@
   </div>
 
   <div class="summary-section">
-    <app-summary
-      [total]="filtered.length"
-      [media]="mediaGenerala"
-    ></app-summary>
+    <app-summary [total]="filtered.length" [media]="mediaGenerala"></app-summary>
   </div>
 </div>
