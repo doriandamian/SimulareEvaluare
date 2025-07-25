@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-sugestii-liceu',
   templateUrl: './sugestii-liceu.component.html',
   standalone: true,
+  styleUrls: ['./sugestii-liceu.component.scss'],
   imports: [CommonModule],
 })
 export class SugestiiLiceuComponent {

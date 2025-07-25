@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-repartizare-liceu',
   templateUrl: './repartizare-liceu.component.html',
+  styleUrls: ['./repartizare-liceu.component.scss'],
   imports: [SugestiiLiceuComponent, StatisticsPanelComponent, RepartizareFormComponent, CommonModule],
   standalone: true,
 })

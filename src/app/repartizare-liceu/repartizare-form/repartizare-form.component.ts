@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-repartizare-form',
   templateUrl: './repartizare-form.component.html',
   imports: [FormsModule],
+  styleUrls: ['./repartizare-form.component.scss'],
   standalone: true,
 })
 export class RepartizareFormComponent {
