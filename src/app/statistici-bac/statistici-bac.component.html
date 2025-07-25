@@ -1,1 +1,29 @@
-<p>statistici-bac works!</p>
+<div class="statistics-container">
+  <div class="header">
+    <button class="back-button" (click)="goBack()">← Inapoi</button>
+    <h1 class="title">Bacalaureat 2025 Brasov</h1>
+  </div>
+
+  <div class="filters-section">
+    <app-filters
+      [unitati]="unitati"
+      [rawData]="rawData"
+      (selectionChanged)="onFiltersChanged($event)"
+    >
+    </app-filters>
+  </div>
+
+  <div class="chart-section">
+    <h3 class="chart-title">Distributia mediilor pe intervale</h3>
+    <div class="chart-container">
+      <app-chart [data]="chartData"></app-chart>
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <app-summary
+      [total]="filtered.length"
+      [media]="mediaGenerala"
+    ></app-summary>
+  </div>
+</div>
