@@ -10,6 +10,6 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   getCandidates(year: number): Observable<Candidate[]> {
-    return this.http.get<Candidate[]>(`../assets/en${year}.json`);
+    return this.http.get<Candidate[]>(`../assets/en/en${year}.json`);
   }
 }
