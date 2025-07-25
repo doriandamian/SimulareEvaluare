@@ -1,1 +1,6 @@
-<p>repartizare-liceu works!</p>
+<div class="container p-4">
+  <h2 class="text-center mb-4">Ce licee ți se potrivesc?</h2>
+  <app-repartizare-form (search)="onSearch($event)"></app-repartizare-form>
+  <app-statistics-panel [year]="selectedYear" [statistici]="statistici"></app-statistics-panel>
+  <app-sugestii-liceu [candidati]="sugestii"></app-sugestii-liceu>
+</div>

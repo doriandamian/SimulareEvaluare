@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  max-width: 700px;
+  margin: 2rem auto;
+
+  h5 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    border: 1px solid #007bff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+    background-color: #e9f5ff;
+    margin-bottom: 1rem;
+
+    .card-body {
+      padding: 1rem;
+
+      div {
+        margin-bottom: 0.5rem;
+      }
+
+      small {
+        color: #444;
+        font-style: italic;
+      }
+    }
+  }
+}
