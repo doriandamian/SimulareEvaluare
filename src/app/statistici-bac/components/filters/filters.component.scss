@@ -24,9 +24,11 @@
     font-size: 16px;
     background: white;
     color: #495057;
-    min-width: 200px;
     cursor: pointer;
     transition: border-color 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:focus {
       outline: none;
@@ -37,6 +39,14 @@
     &:hover {
       border-color: #adb5bd;
     }
+
+    &.unitate-select {
+      width: 575px;
+    }
+
+    &.specializare-select {
+      width: 450px;
+    }
   }
 }
 
@@ -46,7 +56,15 @@
     gap: 20px;
   }
 
-  .filter-group .filter-select {
-    min-width: 250px;
+  .filter-group {
+    .filter-select {
+      &.unitate-select {
+        width: 320px;
+      }
+
+      &.specializare-select {
+        width: 280px;
+      }
+    }
   }
 }

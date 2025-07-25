@@ -20,15 +20,13 @@ export class StatisticiBACComponent {
   mediaGenerala = 0;
 
   unitati: string[] = [];
-  specializari: string[] = [];
 
   constructor(private dataService: BacDataService) {}
 
   async ngOnInit() {
-    this.rawData = this.dataService.loadData();
+    this.rawData = await this.dataService.loadData();
 
     this.unitati = this.dataService.getUnitati(this.rawData);
-    this.specializari = this.dataService.getSpecializari(this.rawData);
 
     this.onFiltersChanged({ unitate: 'Toate', specializare: 'Toate' });
   }

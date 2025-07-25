@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import bacData from '../../statistici-bac/assets/bac-data.json';
 
 @Injectable({ providedIn: 'root' })
 export class BacDataService {
   private rawData: any[][] = [];
 
-  loadData(): any[][] {
-    this.rawData = bacData.slice(1);
+  async loadData(): Promise<any[][]> {
+    if (this.rawData.length) return this.rawData;
+
+    const response = await fetch('assets/bac/bac-data.json');
+    const data = await response.json();
+    this.rawData = data.slice(1);
     return this.rawData;
   }
 

@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class FiltersComponent {
   @Input() unitati: string[] = [];
-  @Input() specializari: string[] = [];
+  @Input() rawData: any[][] = [];
 
   @Output() selectionChanged = new EventEmitter<{
     unitate: string;
@@ -20,6 +20,22 @@ export class FiltersComponent {
 
   selectedUnitate = 'Toate';
   selectedSpecializare = 'Toate';
+
+  get filteredSpecializari(): string[] {
+    if (this.selectedUnitate === 'Toate') {
+      return Array.from(new Set(this.rawData.map(row => row[5])));
+    } else {
+      const specializari = this.rawData
+        .filter(row => row[2] === this.selectedUnitate)
+        .map(row => row[5]);
+      return Array.from(new Set(specializari));
+    }
+  }
+
+  onUnitateChange() {
+    this.selectedSpecializare = 'Toate';
+    this.onChange();
+  }
 
   onChange() {
     this.selectionChanged.emit({
