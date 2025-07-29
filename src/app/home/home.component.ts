@@ -13,8 +13,8 @@ export class HomeComponent {
   constructor(private router: Router) { }
 
   goTo(route: string) {
-    if (route === 'repartizare') {
-      this.router.navigate(['/repartizare']);
+    if (route === 'statisticien') {
+      this.router.navigate(['/statisticien']);
     } else if (route === 'statistici') {
       this.router.navigate(['/statistici']);
     }
