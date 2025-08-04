@@ -22,8 +22,9 @@ $font-stack: Arial, sans-serif;
     padding: $padding;
     border-radius: $radius;
     box-shadow: $shadow;
+    text-align: center;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1770px;
   }
 
   canvas {
@@ -32,6 +33,6 @@ $font-stack: Arial, sans-serif;
     padding: $padding;
     border-radius: $radius;
     width: 100%;
-    max-width: 800px;
+    max-width: 1800px;
   }
 }
