@@ -17,7 +17,10 @@ export class StatisticiEnComponent {
       this.router.navigate(['/repartizare']);
     } else if (route === '-----') {
       this.router.navigate(['/-----']);
+    } else if (route === 'ultimul-admis') {
+      this.router.navigate(['/ultimul-admis']);
     }
+    
   }
 
   goBack() {

@@ -10,37 +10,37 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './filters.component.scss',
 })
 export class FiltersComponent {
-  @Input() unitati: string[] = [];
+  @Input() schools: string[] = [];
   @Input() rawData: any[][] = [];
 
   @Output() selectionChanged = new EventEmitter<{
-    unitate: string;
-    specializare: string;
+    school: string;
+    specialisation: string;
   }>();
 
-  selectedUnitate = 'Toate';
-  selectedSpecializare = 'Toate';
+  selectedSchool = 'Toate';
+  selectedSpecialisation = 'Toate';
 
-  get filteredSpecializari(): string[] {
-    if (this.selectedUnitate === 'Toate') {
+  get filteredSpecialisations(): string[] {
+    if (this.selectedSchool === 'Toate') {
       return Array.from(new Set(this.rawData.map(row => row[5])));
     } else {
       const specializari = this.rawData
-        .filter(row => row[2] === this.selectedUnitate)
+        .filter(row => row[2] === this.selectedSchool)
         .map(row => row[5]);
       return Array.from(new Set(specializari));
     }
   }
 
   onUnitateChange() {
-    this.selectedSpecializare = 'Toate';
+    this.selectedSpecialisation = 'Toate';
     this.onChange();
   }
 
   onChange() {
     this.selectionChanged.emit({
-      unitate: this.selectedUnitate,
-      specializare: this.selectedSpecializare,
+      school: this.selectedSchool,
+      specialisation: this.selectedSpecialisation,
     });
   }
 }
