@@ -19,23 +19,23 @@ export class StatisticiBACComponent {
   chartData: number[] = [];
   mediaGenerala = 0;
 
-  unitati: string[] = [];
+  schools: string[] = [];
 
   constructor(private dataService: BacDataService) { }
 
   async ngOnInit() {
     this.rawData = await this.dataService.loadData();
 
-    this.unitati = this.dataService.getUnitati(this.rawData);
+    this.schools = this.dataService.getSchools(this.rawData);
 
-    this.onFiltersChanged({ unitate: 'Toate', specializare: 'Toate' });
+    this.onFiltersChanged({ school: 'Toate', specialisation: 'Toate' });
   }
 
-  onFiltersChanged(filters: { unitate: string; specializare: string }) {
+  onFiltersChanged(filters: { school: string; specialisation: string }) {
     this.filtered = this.rawData.filter(
       (row) =>
-        (filters.unitate === 'Toate' || row[2] === filters.unitate) &&
-        (filters.specializare === 'Toate' || row[5] === filters.specializare)
+        (filters.school === 'Toate' || row[2] === filters.school) &&
+        (filters.specialisation === 'Toate' || row[5] === filters.specialisation)
     );
     this.updateChart();
   }

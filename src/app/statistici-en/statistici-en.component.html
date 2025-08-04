@@ -1,18 +1,23 @@
 <div class="home-container">
-    <div class="header">
-        <button class="back-button" (click)="goBack()">← Inapoi</button>
+  <div class="header">
+    <button class="back-button" (click)="goBack()">← Inapoi</button>
+  </div>
+  <h1 class="title">Statistici EN</h1>
+
+  <div class="card-container">
+    <div class="card" (click)="goTo('repartizare')">
+      <h2>Repartizare Licee</h2>
+      <p>Simulează repartizarea elevilor în liceele din Brașov.</p>
     </div>
-    <h1 class="title">Statistici EN</h1>
 
-    <div class="card-container">
-        <div class="card" (click)="goTo('repartizare')">
-            <h2>Repartizare Licee</h2>
-            <p>Simulează repartizarea elevilor în liceele din Brașov.</p>
-        </div>
-
+    <div class="card" (click)="goTo('ultimul-admis')">
+      <h2>Ultimul Admis</h2>
+      <p>Vezi indexul ultimului candidat admis la fiecare specializare.</p>
+      
         <div class="card" (click)="goTo('contestatii')">
             <h2>Analiza contestatii</h2>
             <p>Istoricul contestatiilor la proba scrisa la limba si literatura romana </p>
         </div>
     </div>
+  </div>
 </div>

@@ -1,0 +1,18 @@
+<div class="chart-container">
+  <div class="chart-header">
+    <h3>{{ chartTitle }}</h3>
+  </div>
+  
+  <div *ngIf="!hasData" class="no-data-message">
+    <p>Selecteaza specializarea pentru a vedea evolutia indexului ultimului admis in timp.</p>
+  </div>
+  
+  <div *ngIf="hasData" class="chart-wrapper">
+    <canvas 
+      baseChart
+      [data]="chartData"
+      [options]="chartOptions"
+      [type]="chartType">
+    </canvas>
+  </div>
+</div>

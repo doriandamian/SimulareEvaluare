@@ -1,0 +1,25 @@
+<div class="ultimul-admis-container">
+  <div class="page-header">
+    <h1>Ultimul Admis la Liceu</h1>
+    <p class="page-description">
+      Indexul ultimului candidat admis la fiecare specializare in parte
+    </p>
+  </div>
+
+  <app-ultimul-admis-filters
+    [schools]="availableSchools"
+    [specializations]="availableSpecializations"
+    [selectedFilters]="currentFilters"
+    (filtersChange)="onFiltersChange($event)">
+  </app-ultimul-admis-filters>
+
+  <app-ultimul-admis-chart
+    [allData]="allData"
+    [selectedCombinations]="currentFilters.selectedCombinations">
+  </app-ultimul-admis-chart>
+
+  <app-ultimul-admis-table
+    [data]="filteredData"
+    [loading]="isLoading">
+  </app-ultimul-admis-table>
+</div>

@@ -15,9 +15,12 @@ export class StatisticiEnComponent {
   goTo(route: string) {
     if (route === 'repartizare') {
       this.router.navigate(['/repartizare']);
+    } else if (route === 'ultimul-admis') {
+      this.router.navigate(['/ultimul-admis']);
     } else if (route === 'contestatii') {
       this.router.navigate(['/contestatii']);
     }
+    
   }
 
   goBack() {

@@ -13,19 +13,19 @@ export class BacDataService {
     return this.rawData;
   }
 
-  getUnitati(data: any[][]): string[] {
+  getSchools(data: any[][]): string[] {
     return Array.from(new Set(data.map((row) => row[2])));
   }
 
-  getSpecializari(data: any[][]): string[] {
+  getSpecialisations(data: any[][]): string[] {
     return Array.from(new Set(data.map((row) => row[5])));
   }
 
-  filterData(data: any[][], unitate: string, specializare: string): any[][] {
+  filterData(data: any[][], school: string, specialisation: string): any[][] {
     return data.filter(
       (row) =>
-        (unitate === 'Toate' || row[2] === unitate) &&
-        (specializare === 'Toate' || row[5] === specializare)
+        (school === 'Toate' || row[2] === school) &&
+        (specialisation === 'Toate' || row[5] === specialisation)
     );
   }
 }
