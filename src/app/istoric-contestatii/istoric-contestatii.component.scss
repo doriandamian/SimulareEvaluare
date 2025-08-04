@@ -1,0 +1,37 @@
+$bg-color: #f4f4f4;
+$card-bg: #fff;
+$shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+$padding: 1rem;
+$radius: 10px;
+$font-stack: Arial, sans-serif;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: $bg-color;
+  font-family: $font-stack;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  .stats {
+    background: $card-bg;
+    padding: $padding;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  canvas {
+    margin-top: 2rem;
+    background: $card-bg;
+    padding: $padding;
+    border-radius: $radius;
+    width: 100%;
+    max-width: 800px;
+  }
+}
