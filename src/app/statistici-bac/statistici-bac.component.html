@@ -1,11 +1,16 @@
 <div class="statistics-container">
   <div class="header">
     <button class="back-button" (click)="goBack()">← Inapoi</button>
-    <h1 class="title">Bacalaureat 2025 Brasov</h1>
+    <h1 class="title">Bacalaureat 2025{{currentCountyName ? ' - ' + currentCountyName : ''}}</h1>
   </div>
 
   <div class="filters-section">
-    <app-filters [schools]="schools" [rawData]="rawData" (selectionChanged)="onFiltersChanged($event)">
+    <app-filters 
+      [counties]="counties" 
+      [schools]="schools" 
+      [rawData]="rawData" 
+      (countyChanged)="onCountyChanged($event)"
+      (selectionChanged)="onFiltersChanged($event)">
     </app-filters>
   </div>
 

@@ -1,51 +1,89 @@
 .filters-container {
   display: flex;
-  gap: 40px;
-  align-items: center;
+  gap: 30px;
+  align-items: flex-end;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 180px;
 
   .filter-label {
     font-weight: 600;
-    font-size: 16px;
-    color: #212529;
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .filter-select {
     padding: 12px 16px;
-    border: 2px solid #dee2e6;
+    border: 2px solid #e5e7eb;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     background: white;
-    color: #495057;
+    color: #1f2937;
     cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: all 0.2s ease;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    height: 48px;
 
     &:focus {
       outline: none;
-      border-color: #0066cc;
-      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
-    &:hover {
-      border-color: #adb5bd;
+    &:hover:not(:disabled) {
+      border-color: #9ca3af;
+    }
+
+    &:disabled {
+      background-color: #f9fafb;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    &.county-select {
+      width: 200px;
     }
 
     &.unitate-select {
-      width: 575px;
+      width: 400px;
     }
 
     &.specializare-select {
-      width: 450px;
+      width: 320px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .filters-container {
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .filter-group {
+    .filter-select {
+      &.unitate-select {
+        width: 350px;
+      }
+
+      &.specializare-select {
+        width: 280px;
+      }
     }
   }
 }
@@ -54,17 +92,15 @@
   .filters-container {
     flex-direction: column;
     gap: 20px;
+    align-items: stretch;
   }
 
   .filter-group {
+    min-width: auto;
+    
     .filter-select {
-      &.unitate-select {
-        width: 320px;
-      }
-
-      &.specializare-select {
-        width: 280px;
-      }
+      width: 100% !important;
+      max-width: none;
     }
   }
 }
