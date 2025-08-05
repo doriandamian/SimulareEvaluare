@@ -1,0 +1,10 @@
+{
+  "/evaluare": {
+    "target": "https://static.evaluare.edu.ro",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/evaluare": ""
+    }
+  }
+}
