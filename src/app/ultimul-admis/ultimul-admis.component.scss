@@ -1,0 +1,38 @@
+.ultimul-admis-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: calc(100vh - 100px);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
+  }
+
+  .page-description {
+    font-size: 18px;
+    color: #6b7280;
+    margin: 0;
+    max-width: 600px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
+  }
+}

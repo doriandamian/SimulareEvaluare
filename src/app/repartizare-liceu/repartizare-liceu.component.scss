@@ -1,0 +1,39 @@
+.container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
+
+  .back-button {
+    background: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #495057;
+    position: absolute;
+    left: 0;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #dee2e6;
+    }
+  }
+
+  h2 {
+    color: black;
+    font-weight: 700;
+    text-align: center;
+  }
+}

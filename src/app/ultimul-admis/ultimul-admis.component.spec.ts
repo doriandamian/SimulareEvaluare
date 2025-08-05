@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StatisticiBACComponent } from './statistici-bac.component';
+import { UltimulAdmisComponent } from './ultimul-admis.component';
 
-describe('StatisticiBACComponent', () => {
-  let component: StatisticiBACComponent;
-  let fixture: ComponentFixture<StatisticiBACComponent>;
+describe('UltimulAdmisComponent', () => {
+  let component: UltimulAdmisComponent;
+  let fixture: ComponentFixture<UltimulAdmisComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatisticiBACComponent]
+      imports: [UltimulAdmisComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StatisticiBACComponent);
+    fixture = TestBed.createComponent(UltimulAdmisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
