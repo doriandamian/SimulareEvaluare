@@ -1,7 +1,7 @@
 .statistics-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px 20px;
   background-color: #f8f9fa;
   min-height: 100vh;
 }
@@ -11,31 +11,38 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 
   .back-button {
-    background: #e9ecef;
-    border: 1px solid #dee2e6;
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
     border-radius: 8px;
-    padding: 8px 16px;
+    padding: 10px 20px;
     cursor: pointer;
     font-size: 14px;
-    color: #495057;
+    font-weight: 500;
+    color: #374151;
     position: absolute;
     left: 0;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
     &:hover {
-      background: #dee2e6;
+      background: #f9fafb;
+      border-color: #d1d5db;
+      transform: translateX(-2px);
     }
   }
 
   .title {
     margin: 0;
-    font-size: 28px;
-    font-weight: 600;
-    color: #212529;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2937;
     text-align: center;
+    letter-spacing: -0.5px;
   }
 }
 
@@ -45,21 +52,23 @@
 
 .chart-section {
   background: white;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
   margin-bottom: 30px;
 
   .chart-title {
     text-align: center;
-    margin: 0 0 30px 0;
-    font-size: 18px;
-    font-weight: 500;
-    color: #6c757d;
+    margin: 0 0 35px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #374151;
   }
 
   .chart-container {
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
   }
 }

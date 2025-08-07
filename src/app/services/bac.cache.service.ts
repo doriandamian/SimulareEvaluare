@@ -1,15 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BacCandidate } from '../model/bac.candidate';
-import {
-  catchError,
-  forkJoin,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { BacUrls } from '../assets/bac.urls';
 
 @Injectable({
@@ -23,8 +15,8 @@ export class BacCacheService {
   init(): Observable<BacCandidate[]> {
     const counties = Object.entries(BacUrls);
 
-    const allCountyRequests = counties.map(([county, firstPageUrl]) =>
-      this.loadAllCountyPages(county, firstPageUrl)
+    const allCountyRequests = counties.map(([county, jsonUrl]) =>
+      this.loadCountyData(county, jsonUrl)
     );
 
     return forkJoin(allCountyRequests).pipe(
@@ -42,121 +34,75 @@ export class BacCacheService {
     return this.cache.get(county) || [];
   }
 
-  private loadAllCountyPages(
-    county: string,
-    firstPageUrl: string
-  ): Observable<BacCandidate[]> {
-    const baseMatch = firstPageUrl.match(/(.*\/page_)\d+(\.html)/);
-    if (!baseMatch)
-      return this.http
-        .get(firstPageUrl, { responseType: 'text' })
-        .pipe(map((html) => this.parseHtmlToCandidates(html, county)));
-
-    const [_, base, ext] = baseMatch;
-
-    const loadPage = (
-      pageIndex: number,
-      accumulated: BacCandidate[]
-    ): Observable<BacCandidate[]> => {
-      const url = `${base}${pageIndex}${ext}`;
-      return this.http.get(url, { responseType: 'text' }).pipe(
-        map((html) => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const table = doc.querySelector('table#mainTable');
-
-          if (!table) {
-            // Return null so switchMap stops
-            return null;
-          }
-
-          const candidates = this.parseHtmlToCandidates(html, county);
-          return candidates;
-        }),
-        switchMap((candidates) => {
-          if (!candidates) {
-            // No table = done
-            return of(accumulated);
-          } else {
-            return loadPage(pageIndex + 1, accumulated.concat(candidates));
-          }
-        })
-      );
-    };
-
-    return loadPage(1, []);
+  getAvailableCounties(): string[] {
+    return Object.keys(BacUrls);
   }
 
-  private parseHtmlToCandidates(html: string, county: string): BacCandidate[] {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const table = doc.querySelector('table#mainTable');
-    if (!table) {
-      console.error(`Table not found for ${county}`);
+  getBacData(county: string): BacCandidate[] {
+    return this.getCountyData(county);
+  }
+
+  private loadCountyData(
+    county: string,
+    jsonUrl: string
+  ): Observable<BacCandidate[]> {
+    return this.http.get<any[]>(jsonUrl).pipe(
+      map((rawData) => this.processRawData(rawData, county)),
+      catchError((error) => {
+        console.error(`Failed to load data for county ${county}:`, error);
+        return of([]);
+      })
+    );
+  }
+
+  private processRawData(rawData: any[], county: string): BacCandidate[] {
+    if (!Array.isArray(rawData) || rawData.length === 0) {
       return [];
     }
 
-    const rows = Array.from(table.querySelectorAll('tr')); // skip header
-    const candidates: BacCandidate[] = [];
+    const dataRows = rawData
+      .slice(1)
+      .filter((row) => Array.isArray(row) && row.length > 15);
 
-    for (let i = 2; i < rows.length; i += 2) {
-      const row1 = rows[i];
-      const row2 = rows[i + 1];
+    return dataRows
+      .map((row, index) => {
+        const candidate: BacCandidate = {
+          index: index + 1,
+          code: this.extractCode(row[1] || ''), // Code is at index 1
+          posJud: parseInt(row[2]) || 0,
+          posTara: parseInt(row[3]) || 0,
+          school: row[4] || '', // School name is at index 4
+          county: county,
+          promotie_anterioara: row[5] || '',
+          forma_invatamant: row[6] || '',
+          specializare: row[7] || '', // Specialization is at index 7
+          LR: this.parseGrade(row[9]), // Romanian language grade at index 9
+          LM: this.parseGrade(row[11]), // Mother language grade at index 11  
+          DO: this.parseGrade(row[24]), // Mandatory subject grade at index 24
+          DA: this.parseGrade(row[26]), // Optional subject grade at index 26
+          final_avg: this.parseFinalAverage(row[18]), // Final average is already calculated in raw data at index 18
+          final_res: row[19] || '', // Final result at index 19
+        };
 
-      if (!row2) continue;
-
-      const cells1 = Array.from(row1.querySelectorAll('td')).map(
-        (td) => td.innerText?.trim() || ''
-      );
-      const cells2 = Array.from(row2.querySelectorAll('td')).map(
-        (td) => td.innerText?.trim() || ''
-      );
-
-      const candidate: BacCandidate = {
-        index: parseInt(cells1[0]),
-        code: this.extractCode(cells1[1]),
-        posJud: parseInt(cells1[2]),
-        posTara: parseInt(cells1[3]),
-        school: cells1[4],
-        county: county,
-        promotie_anterioara: cells1[5],
-        forma_invatamant: cells1[6],
-        specializare: cells1[7],
-        LR: parseFloat(cells1[11]),
-        LM: parseFloat(cells2[3]) || null,
-        DO: parseFloat(cells2[6]),
-        DA: parseFloat(cells2[9]),
-        final_avg: null,
-        final_res: '',
-      };
-      this.calculateFinalGrade(candidate);
-      candidates.push(candidate);
-    }
-    return candidates;
+        return candidate;
+      })
+      .filter((candidate) => candidate.code !== '' && candidate.school !== '');
   }
 
-  private calculateFinalGrade(candidate: BacCandidate): void {
-    const { LR, LM, DO, DA } = candidate;
-
-    if (LR <= 1 || DO <= 1 || DA <= 1) {
-      candidate.final_avg = null;
-      candidate.final_res = 'NEPREZENTAT';
-      return;
+  private parseGrade(value: any): number {
+    if (value === null || value === undefined || value === '') {
+      return 1;
     }
+    const numValue = parseFloat(String(value).replace(',', '.'));
+    return isNaN(numValue) ? 1 : numValue;
+  }
 
-    let avg: number;
-    if (LM == null) {
-      avg = (LR + DO + DA) / 3;
-    } else {
-      avg = (LR + LM + DO + DA) / 4;
+  private parseFinalAverage(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
     }
-
-    avg = Math.round(avg * 100) / 100;
-    candidate.final_avg = avg;
-
-    if (avg >= 6 && LR >= 5 && DO >= 5 && DA >= 5 && (LM == null || LM >= 5))
-      candidate.final_res = 'REUSIT';
-    else candidate.final_res = 'RESPINS';
+    const numValue = parseFloat(String(value).replace(',', '.'));
+    return isNaN(numValue) ? null : numValue;
   }
 
   private extractCode(raw: string): string {
