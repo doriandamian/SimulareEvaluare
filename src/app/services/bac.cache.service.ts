@@ -60,7 +60,6 @@ export class BacCacheService {
       return [];
     }
 
-    // Skip header row and empty rows
     const dataRows = rawData
       .slice(1)
       .filter((row) => Array.isArray(row) && row.length > 15);
@@ -77,15 +76,14 @@ export class BacCacheService {
           promotie_anterioara: row[5] || '',
           forma_invatamant: row[6] || '',
           specializare: row[7] || '', // Specialization is at index 7
-          LR: this.parseGrade(row[10]), // Romanian language grade
-          LM: this.parseGrade(row[11]), // Mother tongue grade
-          DO: this.parseGrade(row[15]), // Mandatory subject grade
-          DA: this.parseGrade(row[16]), // Optional subject grade
-          final_avg: null,
-          final_res: '',
+          LR: this.parseGrade(row[9]), // Romanian language grade at index 9
+          LM: this.parseGrade(row[11]), // Mother language grade at index 11  
+          DO: this.parseGrade(row[24]), // Mandatory subject grade at index 24
+          DA: this.parseGrade(row[26]), // Optional subject grade at index 26
+          final_avg: this.parseFinalAverage(row[18]), // Final average is already calculated in raw data at index 18
+          final_res: row[19] || '', // Final result at index 19
         };
 
-        this.calculateFinalResults(candidate);
         return candidate;
       })
       .filter((candidate) => candidate.code !== '' && candidate.school !== '');
@@ -93,34 +91,18 @@ export class BacCacheService {
 
   private parseGrade(value: any): number {
     if (value === null || value === undefined || value === '') {
-      return 1; // Default for missing grades
+      return 1;
     }
     const numValue = parseFloat(String(value).replace(',', '.'));
     return isNaN(numValue) ? 1 : numValue;
   }
 
-  private calculateFinalResults(candidate: BacCandidate): void {
-    const { LR, LM, DO, DA } = candidate;
-
-    if (LR <= 1 || DO <= 1 || DA <= 1) {
-      candidate.final_avg = null;
-      candidate.final_res = 'NEPREZENTAT';
-      return;
+  private parseFinalAverage(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
     }
-
-    let avg: number;
-    if (LM == null || LM <= 1) {
-      avg = (LR + DO + DA) / 3;
-    } else {
-      avg = (LR + LM + DO + DA) / 4;
-    }
-
-    avg = Math.round(avg * 100) / 100;
-    candidate.final_avg = avg;
-
-    if (avg >= 6 && LR >= 5 && DO >= 5 && DA >= 5 && (LM == null || LM >= 5))
-      candidate.final_res = 'REUSIT';
-    else candidate.final_res = 'RESPINS';
+    const numValue = parseFloat(String(value).replace(',', '.'));
+    return isNaN(numValue) ? null : numValue;
   }
 
   private extractCode(raw: string): string {

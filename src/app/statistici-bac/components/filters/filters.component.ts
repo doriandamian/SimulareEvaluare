@@ -31,7 +31,7 @@ export class FiltersComponent {
     } else {
       const specializari = this.rawData
         .filter(row => row[4] === this.selectedSchool) // School name is at index 4
-        .map(row => row[7]); // Specialization is at index 7
+        .map(row => row[7]);
       return Array.from(new Set(specializari));
     }
   }
@@ -42,7 +42,7 @@ export class FiltersComponent {
     this.countyChanged.emit(this.selectedCounty);
   }
 
-  onUnitateChange() {
+  onSchoolChange() {
     this.selectedSpecialisation = 'Toate';
     this.onChange();
   }

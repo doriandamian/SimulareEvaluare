@@ -9,7 +9,7 @@
 
   <div class="filter-group">
     <label class="filter-label">Unitate:</label>
-    <select class="filter-select unitate-select" [(ngModel)]="selectedSchool" (change)="onUnitateChange()" [disabled]="!selectedCounty">
+    <select class="filter-select unitate-select" [(ngModel)]="selectedSchool" (change)="onSchoolChange()" [disabled]="!selectedCounty">
       <option value="Toate">Toate</option>
       <option *ngFor="let u of schools" [value]="u">{{ u }}</option>
     </select>

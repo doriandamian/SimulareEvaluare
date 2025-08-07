@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BacCacheService } from '../../services/bac.cache.service';
 import { BacUrls } from '../../assets/bac.urls';
 import { COUNTY_NAMES } from '../../assets/county-names';
+import { BacCandidate } from '../../model/bac.candidate';
 
 export interface CountyOption {
   code: string;
@@ -10,13 +11,11 @@ export interface CountyOption {
 
 @Injectable({ providedIn: 'root' })
 export class BacDataService {
-  private rawData: any[][] = [];
   private initialized = false;
 
   constructor(private bacCacheService: BacCacheService) {}
 
   async getAvailableCounties(): Promise<CountyOption[]> {
-    // Return the list of available counties with both code and name
     return Object.keys(BacUrls).map(code => ({
       code,
       name: COUNTY_NAMES[code] || code
@@ -25,30 +24,14 @@ export class BacDataService {
 
   async loadData(county?: string): Promise<any[][]> {
     if (!county) {
-      this.rawData = [];
-      return this.rawData;
+      return [];
     }
 
-    try {
-      // Load raw JSON data directly for the county
-      const url = `assets/bac_data/bac_data_${county}.json`;
-      const response = await fetch(url);
-      const rawCountyData = await response.json();
-      
-      if (Array.isArray(rawCountyData) && rawCountyData.length > 0) {
-        // Filter out empty rows and keep the original structure
-        this.rawData = rawCountyData.filter(row => 
-          Array.isArray(row) && row.length > 19 && row[4] // Must have school name and complete data
-        );
-      } else {
-        this.rawData = [];
-      }
-    } catch (error) {
-      console.error(`Failed to load data for county ${county}:`, error);
-      this.rawData = [];
-    }
+    await this.initializeCache();
 
-    return this.rawData;
+    const cachedData = this.bacCacheService.getCountyData(county);
+    
+    return cachedData.map(candidate => this.convertCandidateToRaw(candidate));
   }
 
   private async initializeCache(): Promise<void> {
@@ -56,6 +39,26 @@ export class BacDataService {
       await this.bacCacheService.init().toPromise();
       this.initialized = true;
     }
+  }
+
+  private convertCandidateToRaw(candidate: BacCandidate): any[] {
+    // Convert BacCandidate back to the raw array format expected by the component
+    const raw = new Array(20).fill('');
+    raw[0] = candidate.index;
+    raw[1] = candidate.code;
+    raw[2] = candidate.posJud;
+    raw[3] = candidate.posTara;
+    raw[4] = candidate.school;
+    raw[5] = candidate.promotie_anterioara;
+    raw[6] = candidate.forma_invatamant;
+    raw[7] = candidate.specializare;
+    raw[10] = candidate.LR;
+    raw[11] = candidate.LM !== null ? candidate.LM : '';
+    raw[15] = candidate.DO;
+    raw[16] = candidate.DA;
+    raw[18] = candidate.final_avg !== null ? candidate.final_avg : '';
+    raw[19] = candidate.final_res;
+    return raw;
   }
 
   getSchools(data: any[][]): string[] {
@@ -69,8 +72,8 @@ export class BacDataService {
   filterData(data: any[][], school: string, specialisation: string): any[][] {
     return data.filter(
       (row) =>
-        (school === 'Toate' || row[4] === school) &&  // School name is at index 4
-        (specialisation === 'Toate' || row[7] === specialisation)  // Specialization is at index 7
+        (school === 'Toate' || row[4] === school) && 
+        (specialisation === 'Toate' || row[7] === specialisation) 
     );
   }
 }

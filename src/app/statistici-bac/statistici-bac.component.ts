@@ -23,6 +23,7 @@ export class StatisticiBACComponent {
   schools: string[] = [];
   currentCounty = '';
   currentCountyName = '';
+  isLoading = false;
 
   constructor(private dataService: BacDataService) { }
 
@@ -37,15 +38,21 @@ export class StatisticiBACComponent {
     this.currentCountyName = countyOption ? countyOption.name : '';
     
     if (county) {
-      this.rawData = await this.dataService.loadData(county);
-      this.schools = this.dataService.getSchools(this.rawData);
-      this.onFiltersChanged({ school: 'Toate', specialisation: 'Toate' });
+      this.isLoading = true;
+      try {
+        this.rawData = await this.dataService.loadData(county);
+        this.schools = this.dataService.getSchools(this.rawData);
+        this.onFiltersChanged({ school: 'Toate', specialisation: 'Toate' });
+      } finally {
+        this.isLoading = false;
+      }
     } else {
       this.rawData = [];
       this.schools = [];
       this.filtered = [];
       this.chartData = [];
       this.currentCountyName = '';
+      this.isLoading = false;
     }
   }
 
