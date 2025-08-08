@@ -66,7 +66,6 @@ export class BacCacheServiceBackup {
           const table = doc.querySelector('table#mainTable');
 
           if (!table) {
-            // Return null so switchMap stops
             return null;
           }
 
@@ -75,7 +74,6 @@ export class BacCacheServiceBackup {
         }),
         switchMap((candidates) => {
           if (!candidates) {
-            // No table = done
             return of(accumulated);
           } else {
             return loadPage(pageIndex + 1, accumulated.concat(candidates));
@@ -96,7 +94,7 @@ export class BacCacheServiceBackup {
       return [];
     }
 
-    const rows = Array.from(table.querySelectorAll('tr')); // skip header
+    const rows = Array.from(table.querySelectorAll('tr')); 
     const candidates: BacCandidate[] = [];
 
     for (let i = 2; i < rows.length; i += 2) {

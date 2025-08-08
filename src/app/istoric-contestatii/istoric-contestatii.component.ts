@@ -68,7 +68,6 @@ export class IstoricContestatiiComponent implements OnInit {
 
   onCountyChange() {
     const data = this.allData[this.selectedCounty] || [];
-    // Only keep entries with non-null ri and ra
     const safeContested: EvCandidate[] = data.filter((e: EvCandidate) => e.ri !== null && e.ra !== null);
     this.contested = safeContested;
 
@@ -98,7 +97,6 @@ export class IstoricContestatiiComponent implements OnInit {
   }
 
   private renderCharts(labels: string[], riValues: number[], raValues: number[], deviation: number[]): void {
-    // Destroy previous chart instances if they exist
     if (this.chartNoteInstance) {
       this.chartNoteInstance.destroy();
     }
