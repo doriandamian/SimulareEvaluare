@@ -34,7 +34,9 @@ export class RepartizareLiceuComponent {
         absolvire: this.avg(res.map(c => parseFloat(c.mabs))),
       };
 
-      this.sugestii = res.filter(c => parseFloat(c.madm) <= data.madm);
+      this.sugestii = res
+        .filter(c => parseFloat(c.madm) <= data.madm)
+        .sort((a, b) => parseFloat(b.madm) - parseFloat(a.madm));
     });
   }
 
