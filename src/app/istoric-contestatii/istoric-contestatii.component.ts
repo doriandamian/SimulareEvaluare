@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
+import { EvCacheService } from '../services/ev.cache.service';
+import { EvCandidate } from '../model/ev.candidate';
+import { COUNTY_NAMES } from '../assets/county-names';
+import { FormsModule } from '@angular/forms';
 import {
   Chart,
   LineController,
@@ -38,54 +42,71 @@ interface Note {
   templateUrl: './istoric-contestatii.component.html',
   styleUrls: ['./istoric-contestatii.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 export class IstoricContestatiiComponent implements OnInit {
+  private chartNoteInstance: Chart | null = null;
+  private chartDeviatieInstance: Chart | null = null;
   statisticiHtml = '';
   private filterInterval = false;
+  counties = Object.keys(COUNTY_NAMES);
+  countyNames = COUNTY_NAMES;
+  selectedCounty = 'BV';
+  allData: { [county: string]: EvCandidate[] } = {};
+  contested: EvCandidate[] = [];
+
+  constructor(private evCache: EvCacheService) {}
 
   ngOnInit(): void {
-    fetch('../assets/en/candidate2025.json')
-      .then(res => res.json())
-      .then((data: Note[]) => {
-        let contested = data.filter(e => e.ra !== null);
-
-        if (this.filterInterval) {
-          contested = contested.filter(e => e.ri >= 8 && e.ri <= 9);
-        }
-
-        contested.sort((a, b) => a.ri - b.ri);
-
-        const labels = contested.map(e => e.name);
-        const riValues = contested.map(e => e.ri);
-        const raValues = contested.map(e => e.ra as number);
-        const deviation = contested.map(e => (e.ra as number) - e.ri);
-
-        const total = contested.length;
-        const crescut = contested.filter(e => (e.ra as number) > e.ri).length;
-        const scazut = contested.filter(e => (e.ra as number) < e.ri).length;
-        const neschimbat = contested.filter(e => (e.ra as number) === e.ri).length;
-        const mediaDiferenta = total > 0
-          ? (contested.reduce((acc, e) => acc + ((e.ra as number) - e.ri), 0) / total).toFixed(3)
-          : '0';
-
-        this.statisticiHtml = `
-          <p>Total contestații${this.filterInterval ? " (8 ≤ nota inițială ≤ 9)" : ""}: <strong>${total}</strong></p>
-          <p>Note crescute: <strong>${crescut}</strong></p>
-          <p>Note scazute: <strong>${scazut}</strong></p>
-          <p>Fara modificare: <strong>${neschimbat}</strong></p>
-          <p>Diferenta medie: <strong>${mediaDiferenta}</strong> puncte</p>
-        `;
-
-        this.renderCharts(labels, riValues, raValues, deviation);
-      })
-      .catch(error => {
-        this.statisticiHtml = `<p style="color: red;">Eroare la încărcarea candidate2025.json: ${error}</p>`;
+    this.evCache.init().subscribe(() => {
+      this.counties.forEach(county => {
+        this.allData[county] = this.evCache.getCountyData(county) || [];
       });
+      this.onCountyChange();
+    });
+  }
+
+  onCountyChange() {
+    const data = this.allData[this.selectedCounty] || [];
+    // Only keep entries with non-null ri and ra
+    const safeContested: EvCandidate[] = data.filter((e: EvCandidate) => e.ri !== null && e.ra !== null);
+    this.contested = safeContested;
+
+    const labels = safeContested.map((e: EvCandidate) => e.name);
+    const riValues = safeContested.map((e: EvCandidate) => e.ri as number);
+    const raValues = safeContested.map((e: EvCandidate) => e.ra as number);
+    const deviation = safeContested.map((e: EvCandidate) => (e.ra as number) - (e.ri as number));
+
+    const total = safeContested.length;
+    const crescut = safeContested.filter((e: EvCandidate) => (e.ra as number) > (e.ri as number)).length;
+    const scazut = safeContested.filter((e: EvCandidate) => (e.ra as number) < (e.ri as number)).length;
+    const neschimbat = safeContested.filter((e: EvCandidate) => (e.ra as number) === (e.ri as number)).length;
+    const mediaDiferenta = total > 0
+      ? (safeContested.reduce((acc: number, e: EvCandidate) => acc + ((e.ra as number) - (e.ri as number)), 0) / total).toFixed(3)
+      : '0';
+
+    this.statisticiHtml = `
+      <p>Județ: <strong>${this.countyNames[this.selectedCounty]}</strong></p>
+      <p>Total contestații${this.filterInterval ? " (8 ≤ nota inițială ≤ 9)" : ""}: <strong>${total}</strong></p>
+      <p>Note crescute: <strong>${crescut}</strong></p>
+      <p>Note scazute: <strong>${scazut}</strong></p>
+      <p>Fara modificare: <strong>${neschimbat}</strong></p>
+      <p>Diferenta medie: <strong>${mediaDiferenta}</strong> puncte</p>
+    `;
+
+    this.renderCharts(labels, riValues, raValues, deviation);
   }
 
   private renderCharts(labels: string[], riValues: number[], raValues: number[], deviation: number[]): void {
-    new Chart('chartNote', {
+    // Destroy previous chart instances if they exist
+    if (this.chartNoteInstance) {
+      this.chartNoteInstance.destroy();
+    }
+    if (this.chartDeviatieInstance) {
+      this.chartDeviatieInstance.destroy();
+    }
+
+    this.chartNoteInstance = new Chart('chartNote', {
       type: 'line',
       data: {
         labels,
@@ -125,7 +146,7 @@ export class IstoricContestatiiComponent implements OnInit {
       }
     });
 
-    new Chart('chartDeviatie', {
+    this.chartDeviatieInstance = new Chart('chartDeviatie', {
       type: 'bar',
       data: {
         labels,
