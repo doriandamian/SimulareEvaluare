@@ -1,7 +1,6 @@
 <div class="container p-4">
   <div class="header">
     <button class="back-button" (click)="goBack()">← Inapoi</button>
-    <h2 class="text-center mb-4">Ce licee ți se potrivesc?</h2>
   </div>
   <app-repartizare-form (search)="onSearch($event)"></app-repartizare-form>
   <app-statistics-panel [year]="selectedYear" [statistici]="statistici"></app-statistics-panel>

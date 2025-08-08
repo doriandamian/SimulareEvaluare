@@ -1,9 +1,14 @@
+<div class="header">
+	<button class="back-button" (click)="goBack()">← Înapoi</button>
+</div>
 <h1>Analiza contestatii la romana</h1>
-<label for="countySelect">Alege județul:</label>
-<select id="countySelect" [(ngModel)]="selectedCounty" (change)="onCountyChange()">
-	<option *ngFor="let code of counties" [value]="code">{{ countyNames[code] }}</option>
-</select>
-<div class="stats" [innerHTML]="statisticiHtml"></div>
+<div class="stats">
+	<label for="countySelect">Alege județul:</label>
+	<select id="countySelect" [(ngModel)]="selectedCounty" (change)="onCountyChange()">
+		<option *ngFor="let code of counties" [value]="code">{{ countyNames[code] }}</option>
+	</select>
+	<div [innerHTML]="statisticiHtml"></div>
+</div>
 
 <canvas id="chartNote" width="800" height="400"></canvas>
 <canvas id="chartDeviatie" width="800" height="400"></canvas>

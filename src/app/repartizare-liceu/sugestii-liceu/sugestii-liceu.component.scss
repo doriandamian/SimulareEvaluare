@@ -5,15 +5,22 @@
 
   h5 {
     text-align: center;
-    color: #007bff;
+    color: #fff;
     margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: none;
+    line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
   }
 
   .card {
     border: 1px solid #007bff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
-    background-color: #e9f5ff;
+    background-color: #fff;
     margin-bottom: 1rem;
 
     .card-body {

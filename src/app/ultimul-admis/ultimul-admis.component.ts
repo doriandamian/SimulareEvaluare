@@ -9,8 +9,8 @@ import { UltimulAdmisChartComponent } from './ultimul-admis-chart/ultimul-admis-
   selector: 'app-ultimul-admis',
   standalone: true,
   imports: [
-    CommonModule, 
-    UltimulAdmisFiltersComponent, 
+    CommonModule,
+    UltimulAdmisFiltersComponent,
     UltimulAdmisTableComponent,
     UltimulAdmisChartComponent
   ],
@@ -23,14 +23,14 @@ export class UltimulAdmisComponent implements OnInit {
   filteredData: SchoolSpecialization[] = [];
   availableSchools: string[] = [];
   availableSpecializations: string[] = [];
-  
+
   currentFilters: UltimulAdmisFilters = {
     school: '',
     specialization: '',
     selectedCombinations: []
   };
 
-  constructor(private enDataService: EnDataService) {}
+  constructor(private enDataService: EnDataService) { }
 
   async ngOnInit() {
     await this.loadData();
@@ -38,7 +38,7 @@ export class UltimulAdmisComponent implements OnInit {
 
   async loadData() {
     this.isLoading = true;
-    
+
     try {
       this.enDataService.clearCache();
       this.allData = await this.enDataService.processAdmissionData();
@@ -61,10 +61,10 @@ export class UltimulAdmisComponent implements OnInit {
 
   private updateAvailableOptions() {
     this.availableSchools = this.enDataService.getUniqueSchools(this.allData);
-    
+
     if (this.currentFilters.school) {
       this.availableSpecializations = this.enDataService.getSpecializationsForSchool(
-        this.allData, 
+        this.allData,
         this.currentFilters.school
       );
     } else {
@@ -74,8 +74,8 @@ export class UltimulAdmisComponent implements OnInit {
 
   private applyFilters() {
     if (this.currentFilters.selectedCombinations.length > 0) {
-      this.filteredData = this.allData.filter(item => 
-        this.currentFilters.selectedCombinations.some(combo => 
+      this.filteredData = this.allData.filter(item =>
+        this.currentFilters.selectedCombinations.some(combo =>
           combo.school === item.school && combo.specialization === item.specialization
         )
       );
@@ -88,5 +88,9 @@ export class UltimulAdmisComponent implements OnInit {
     } else {
       this.filteredData = [];
     }
+  }
+
+  goBack() {
+    window.history.back();
   }
 }

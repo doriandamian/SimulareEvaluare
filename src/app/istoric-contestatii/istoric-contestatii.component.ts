@@ -55,7 +55,7 @@ export class IstoricContestatiiComponent implements OnInit {
   allData: { [county: string]: EvCandidate[] } = {};
   contested: EvCandidate[] = [];
 
-  constructor(private evCache: EvCacheService) {}
+  constructor(private evCache: EvCacheService) { }
 
   ngOnInit(): void {
     this.evCache.init().subscribe(() => {
@@ -85,7 +85,6 @@ export class IstoricContestatiiComponent implements OnInit {
       : '0';
 
     this.statisticiHtml = `
-      <p>Județ: <strong>${this.countyNames[this.selectedCounty]}</strong></p>
       <p>Total contestații${this.filterInterval ? " (8 ≤ nota inițială ≤ 9)" : ""}: <strong>${total}</strong></p>
       <p>Note crescute: <strong>${crescut}</strong></p>
       <p>Note scazute: <strong>${scazut}</strong></p>
@@ -176,6 +175,10 @@ export class IstoricContestatiiComponent implements OnInit {
         }
       }
     });
+  }
+
+  goBack() {
+    window.history.back();
   }
 }
 

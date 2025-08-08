@@ -1,39 +1,160 @@
-.container {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  max-width: 900px;
-  margin: 2rem auto;
+
+$bg-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$card-bg: #fff;
+$shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+$shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.18);
+$padding: 2rem;
+$radius: 16px;
+$font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$primary-color: #667eea;
+$text-color: #2d3748;
+
+:host ::ng-deep .header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
 }
 
-.header {
+.back-button {
+  background: #fff;
+  border: 2px solid $primary-color;
+  border-radius: 8px;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $primary-color;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+  margin-left: 0;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 30px;
+  gap: 0.5rem;
+}
 
-  .back-button {
-    background: #e9ecef;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #495057;
-    position: absolute;
+.back-button:hover, .back-button:focus {
+  background: $primary-color;
+  color: #fff;
+  border-color: darken($primary-color, 10%);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.18);
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  background: $bg-color;
+  font-family: $font-stack;
+  min-height: 100vh;
+  color: $text-color;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
     left: 0;
-    transition: background-color 0.2s;
+    width: 100%;
+    height: 100%;
+    background: $bg-color;
+    z-index: -1;
+  }
+
+  h1 {
+    margin-bottom: 2rem;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+
+  .stats {
+    background: $card-bg;
+    padding: $padding;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    text-align: center;
+    width: 100%;
+    max-width: 1770px;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
 
     &:hover {
-      background: #dee2e6;
+      box-shadow: $shadow-hover;
+      transform: translateY(-2px);
+    }
+
+    .stat-item {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 12px;
+      border-left: 4px solid $primary-color;
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $primary-color;
+      }
     }
   }
 
-  h2 {
-    color: black;
-    font-weight: 700;
-    text-align: center;
+  canvas {
+    margin-top: 2rem;
+    background: $card-bg;
+    padding: $padding;
+    border-radius: $radius;
+    width: 100%;
+    max-width: 1800px;
+    box-shadow: $shadow;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      box-shadow: $shadow-hover;
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats, canvas {
+      max-width: 100%;
+      margin: 1rem 0;
+      padding: 1.5rem;
+    }
+
+    .stats .stat-item {
+      margin: 0.8rem 0;
+      padding: 0.8rem;
+
+      .stat-value {
+        font-size: 1.6rem;
+      }
+    }
   }
 }
