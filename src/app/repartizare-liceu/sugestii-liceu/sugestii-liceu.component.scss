@@ -10,10 +10,10 @@
     font-size: 2rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: none;
     line-height: 1.2;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   }
 
   .card {
@@ -22,6 +22,8 @@
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
     background-color: #fff;
     margin-bottom: 1rem;
+    color: #2d3748;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
     .card-body {
       padding: 1rem;

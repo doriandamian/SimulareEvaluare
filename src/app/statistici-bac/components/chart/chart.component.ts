@@ -14,25 +14,27 @@ export class ChartComponent {
   @Input() set data(value: number[]) {
     this.chartData = {
       labels: this.chartLabels,
-      datasets: [{
-        data: value,
-        backgroundColor: [
-          '#ef4444',
-          '#f97316',
-          '#eab308',
-          '#84cc16',
-          '#22c55e',
-          '#059669',
-        ],
-        borderWidth: 2,
-        borderColor: '#ffffff',
-      }]
+      datasets: [
+        {
+          data: value,
+          backgroundColor: [
+            '#ef4444',
+            '#f97316',
+            '#eab308',
+            '#84cc16',
+            '#22c55e',
+            '#059669',
+          ],
+          borderWidth: 2,
+          borderColor: '#ffffff',
+        },
+      ],
     };
   }
 
   chartData: ChartData<'pie'> = {
     labels: [],
-    datasets: []
+    datasets: [],
   };
 
   chartLabels = ['Neprezentat', 'Respins', '6-7', '7-8', '8-9', '9-10'];
@@ -59,9 +61,9 @@ export class ChartComponent {
           padding: 20,
           usePointStyle: true,
           font: {
-            size: 14
-          }
-        }
+            size: 14,
+          },
+        },
       },
       tooltip: {
         callbacks: {
@@ -71,9 +73,9 @@ export class ChartComponent {
             const value = context.parsed as number;
             const percentage = ((value / total) * 100).toFixed(1);
             return `${context.label}: ${value} elevi (${percentage}%)`;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 }

@@ -1,27 +1,35 @@
 <div class="statistics-container">
   <div class="header">
     <button class="back-button" (click)="goBack()">← Inapoi</button>
-    <h1 class="title">Bacalaureat 2025{{currentCountyName ? ' - ' + currentCountyName : ''}}</h1>
   </div>
+  <h1 class="title">
+    Bacalaureat 2025{{ currentCountyName ? " - " + currentCountyName : "" }}
+  </h1>
 
   <div class="filters-section">
-    <app-filters 
-      [counties]="counties" 
-      [schools]="schools" 
-      [rawData]="rawData" 
+    <app-filters
+      [counties]="counties"
+      [schools]="schools"
+      [rawData]="rawData"
       (countyChanged)="onCountyChanged($event)"
-      (selectionChanged)="onFiltersChanged($event)">
+      (selectionChanged)="onFiltersChanged($event)"
+    >
     </app-filters>
   </div>
 
   <div class="chart-section">
-    <h3 class="chart-title">Distributia mediilor pe intervale</h3>
+    <div class="chart-title-wrapper">
+      <h3 class="chart-title">Distributia mediilor pe intervale</h3>
+    </div>
     <div class="chart-container">
       <app-chart [data]="chartData"></app-chart>
     </div>
   </div>
 
   <div class="summary-section">
-    <app-summary [total]="filtered.length" [media]="mediaGenerala"></app-summary>
+    <app-summary
+      [total]="filtered.length"
+      [media]="mediaGenerala"
+    ></app-summary>
   </div>
 </div>

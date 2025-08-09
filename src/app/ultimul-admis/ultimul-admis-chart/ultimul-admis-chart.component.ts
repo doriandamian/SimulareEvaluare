@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
@@ -11,11 +18,14 @@ Chart.register(...registerables);
   standalone: true,
   imports: [CommonModule, BaseChartDirective],
   templateUrl: './ultimul-admis-chart.component.html',
-  styleUrl: './ultimul-admis-chart.component.scss'
+  styleUrl: './ultimul-admis-chart.component.scss',
 })
 export class UltimulAdmisChartComponent implements OnChanges {
   @Input() allData: SchoolSpecialization[] = [];
-  @Input() selectedCombinations: Array<{school: string, specialization: string}> = [];
+  @Input() selectedCombinations: Array<{
+    school: string;
+    specialization: string;
+  }> = [];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -23,9 +33,9 @@ export class UltimulAdmisChartComponent implements OnChanges {
   public chartType: ChartType = 'line';
   public chartData: ChartConfiguration['data'] = {
     labels: [],
-    datasets: []
+    datasets: [],
   };
-  
+
   public chartOptions: ChartConfiguration['options'] = {
     responsive: true,
     maintainAspectRatio: false,
@@ -35,36 +45,36 @@ export class UltimulAdmisChartComponent implements OnChanges {
         text: 'Evolutia Indexului Ultimului Admis',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       legend: {
         display: true,
-        position: 'top'
-      }
+        position: 'top',
+      },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'An'
-        }
+          text: 'An',
+        },
       },
       y: {
         title: {
           display: true,
-          text: 'Index Ultimul Admis'
+          text: 'Index Ultimul Admis',
         },
         beginAtZero: true,
-        min: 0
-      }
-    }
+        min: 0,
+      },
+    },
   };
 
   ngOnChanges(changes: SimpleChanges) {
     this.updateChart();
     this.cdr.detectChanges();
-    
+
     setTimeout(() => {
       this.chart?.update();
     }, 100);
@@ -74,41 +84,53 @@ export class UltimulAdmisChartComponent implements OnChanges {
     if (!this.allData.length || !this.selectedCombinations.length) {
       this.chartData = {
         labels: [],
-        datasets: []
+        datasets: [],
       };
       return;
     }
 
     const allYears = new Set<number>();
-    this.selectedCombinations.forEach(combination => {
-      const data = this.allData.find(item => 
-        item.school === combination.school && item.specialization === combination.specialization
+    this.selectedCombinations.forEach((combination) => {
+      const data = this.allData.find(
+        (item) =>
+          item.school === combination.school &&
+          item.specialization === combination.specialization
       );
       if (data) {
-        data.yearlyData.forEach(year => allYears.add(year.year));
+        data.yearlyData.forEach((year) => allYears.add(year.year));
       }
     });
 
     const sortedYears = Array.from(allYears).sort();
-    
+
     const colors = [
-      '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
-      '#06b6d4', '#84cc16', '#f97316', '#ec4899', '#6366f1'
+      '#3b82f6',
+      '#ef4444',
+      '#10b981',
+      '#f59e0b',
+      '#8b5cf6',
+      '#06b6d4',
+      '#84cc16',
+      '#f97316',
+      '#ec4899',
+      '#6366f1',
     ];
 
     const datasets: any[] = [];
     let maxIndex = 0;
 
     this.selectedCombinations.forEach((combination, index) => {
-      const data = this.allData.find(item => 
-        item.school === combination.school && item.specialization === combination.specialization
+      const data = this.allData.find(
+        (item) =>
+          item.school === combination.school &&
+          item.specialization === combination.specialization
       );
-      
+
       if (data) {
         const color = colors[index % colors.length];
-        
-        const chartData = sortedYears.map(year => {
-          const yearData = data.yearlyData.find(y => y.year === year);
+
+        const chartData = sortedYears.map((year) => {
+          const yearData = data.yearlyData.find((y) => y.year === year);
           const indexValue = yearData ? yearData.lastAdmittedIndex : null;
           if (indexValue && indexValue > maxIndex) {
             maxIndex = indexValue;
@@ -128,14 +150,14 @@ export class UltimulAdmisChartComponent implements OnChanges {
           pointBorderWidth: 2,
           pointRadius: 4,
           pointHoverRadius: 6,
-          spanGaps: false
+          spanGaps: false,
         });
       }
     });
 
     this.chartData = {
-      labels: sortedYears.map(year => year.toString()),
-      datasets
+      labels: sortedYears.map((year) => year.toString()),
+      datasets,
     };
 
     if (this.chartOptions?.scales?.['y']) {

@@ -1,13 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SchoolSpecialization, YearlyAdmissionData } from '../services/en-data.service';
+import {
+  SchoolSpecialization,
+  YearlyAdmissionData,
+} from '../services/en-data.service';
 
 @Component({
   selector: 'app-ultimul-admis-table',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './ultimul-admis-table.component.html',
-  styleUrl: './ultimul-admis-table.component.scss'
+  styleUrl: './ultimul-admis-table.component.scss',
 })
 export class UltimulAdmisTableComponent {
   @Input() data: SchoolSpecialization[] = [];
@@ -30,7 +33,7 @@ export class UltimulAdmisTableComponent {
 
       const aStr = String(aValue).toLowerCase();
       const bStr = String(bValue).toLowerCase();
-      
+
       if (this.sortDirection === 'asc') {
         return aStr.localeCompare(bStr);
       } else {
@@ -48,7 +51,10 @@ export class UltimulAdmisTableComponent {
     return `${item.school}-${item.specialization}`;
   }
 
-  getYearData(item: SchoolSpecialization, year: number): YearlyAdmissionData | null {
-    return item.yearlyData.find(data => data.year === year) || null;
+  getYearData(
+    item: SchoolSpecialization,
+    year: number
+  ): YearlyAdmissionData | null {
+    return item.yearlyData.find((data) => data.year === year) || null;
   }
 }

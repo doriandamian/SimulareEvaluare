@@ -9,7 +9,7 @@ import { IstoricContestatiiComponent } from './istoric-contestatii/istoric-conte
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'repartizare', component: RepartizareLiceuComponent },
-  { path: 'statistici', component: StatisticiBACComponent },
+  { path: 'statistici-bac', component: StatisticiBACComponent },
   { path:'statisticien', component: StatisticiEnComponent},
   { path: 'ultimul-admis', component: UltimulAdmisComponent },
   { path:'contestatii', component: IstoricContestatiiComponent}
