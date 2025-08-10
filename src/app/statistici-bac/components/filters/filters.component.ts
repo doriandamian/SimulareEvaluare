@@ -27,11 +27,11 @@ export class FiltersComponent {
 
   get filteredSpecialisations(): string[] {
     if (this.selectedSchool === 'Toate') {
-      return Array.from(new Set(this.rawData.map(row => row[7]))); // Specialization is at index 7
+      return Array.from(new Set(this.rawData.map((row) => row[7]))); // Specialization is at index 7
     } else {
       const specializari = this.rawData
-        .filter(row => row[4] === this.selectedSchool) // School name is at index 4
-        .map(row => row[7]);
+        .filter((row) => row[4] === this.selectedSchool) // School name is at index 4
+        .map((row) => row[7]);
       return Array.from(new Set(specializari));
     }
   }

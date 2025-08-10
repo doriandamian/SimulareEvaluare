@@ -25,7 +25,7 @@ export class StatisticiBACComponent {
   currentCountyName = '';
   isLoading = false;
 
-  constructor(private dataService: BacDataService) { }
+  constructor(private dataService: BacDataService) {}
 
   async ngOnInit() {
     this.counties = await this.dataService.getAvailableCounties();
@@ -34,9 +34,9 @@ export class StatisticiBACComponent {
   async onCountyChanged(county: string) {
     this.currentCounty = county;
     // Find the county name for display
-    const countyOption = this.counties.find(c => c.code === county);
+    const countyOption = this.counties.find((c) => c.code === county);
     this.currentCountyName = countyOption ? countyOption.name : '';
-    
+
     if (county) {
       this.isLoading = true;
       try {
@@ -59,8 +59,9 @@ export class StatisticiBACComponent {
   onFiltersChanged(filters: { school: string; specialisation: string }) {
     this.filtered = this.rawData.filter(
       (row) =>
-        (filters.school === 'Toate' || row[4] === filters.school) &&  // School name is at index 4
-        (filters.specialisation === 'Toate' || row[7] === filters.specialisation)  // Specialization is at index 7
+        (filters.school === 'Toate' || row[4] === filters.school) && // School name is at index 4
+        (filters.specialisation === 'Toate' ||
+          row[7] === filters.specialisation) // Specialization is at index 7
     );
     this.updateChart();
   }
@@ -73,14 +74,14 @@ export class StatisticiBACComponent {
     for (const row of this.filtered) {
       const rezultat = row[19]; // Final result is at index 19
       const medieStr = row[18]; // Final average is at index 18
-      
+
       // Skip if no average data
       if (!medieStr || medieStr === '') {
         if (rezultat === 'NEPREZENTAT') bins[0]++;
         else bins[1]++; // Consider as failed if no grade
         continue;
       }
-      
+
       const medie = parseFloat(medieStr.toString().replace(',', '.'));
 
       if (rezultat === 'NEPREZENTAT') bins[0]++;

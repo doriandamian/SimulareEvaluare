@@ -10,7 +10,12 @@ import { CommonModule } from '@angular/common';
   selector: 'app-repartizare-liceu',
   templateUrl: './repartizare-liceu.component.html',
   styleUrls: ['./repartizare-liceu.component.scss'],
-  imports: [SugestiiLiceuComponent, StatisticsPanelComponent, RepartizareFormComponent, CommonModule],
+  imports: [
+    SugestiiLiceuComponent,
+    StatisticsPanelComponent,
+    RepartizareFormComponent,
+    CommonModule,
+  ],
   standalone: true,
 })
 export class RepartizareLiceuComponent {
@@ -19,7 +24,7 @@ export class RepartizareLiceuComponent {
   statistici: any = {};
   selectedYear = 2024;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {}
 
   onSearch(data: { year: number; madm: number; mabs?: number }) {
     this.selectedYear = data.year;
@@ -28,20 +33,20 @@ export class RepartizareLiceuComponent {
 
       this.statistici = {
         total: res.length,
-        madm: this.avg(res.map(c => parseFloat(c.madm))),
-        romana: this.avg(res.map(c => parseFloat(c.nro))),
-        mate: this.avg(res.map(c => parseFloat(c.nmate))),
-        absolvire: this.avg(res.map(c => parseFloat(c.mabs))),
+        madm: this.avg(res.map((c) => parseFloat(c.madm))),
+        romana: this.avg(res.map((c) => parseFloat(c.nro))),
+        mate: this.avg(res.map((c) => parseFloat(c.nmate))),
+        absolvire: this.avg(res.map((c) => parseFloat(c.mabs))),
       };
 
       this.sugestii = res
-        .filter(c => parseFloat(c.madm) <= data.madm)
+        .filter((c) => parseFloat(c.madm) <= data.madm)
         .sort((a, b) => parseFloat(b.madm) - parseFloat(a.madm));
     });
   }
 
   avg(values: number[]): number {
-    const valid = values.filter(v => !isNaN(v));
+    const valid = values.filter((v) => !isNaN(v));
     return +(valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(2);
   }
 

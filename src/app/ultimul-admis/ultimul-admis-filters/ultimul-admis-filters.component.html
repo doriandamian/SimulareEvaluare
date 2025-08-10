@@ -2,39 +2,42 @@
   <div class="filters-row">
     <div class="filter-group">
       <label for="school-select">Liceu:</label>
-      <select 
-        id="school-select" 
-        [(ngModel)]="selectedFilters.school" 
+      <select
+        id="school-select"
+        [(ngModel)]="selectedFilters.school"
         (change)="onSchoolChange()"
-        class="filter-select school-select">
+        class="filter-select school-select"
+      >
         <option value="">-- Toate liceele --</option>
         <option *ngFor="let school of schools" [value]="school">
-          {{school}}
+          {{ school }}
         </option>
       </select>
     </div>
 
     <div class="filter-group">
       <label for="specialization-select">Specializare:</label>
-      <select 
-        id="specialization-select" 
-        [(ngModel)]="selectedFilters.specialization" 
+      <select
+        id="specialization-select"
+        [(ngModel)]="selectedFilters.specialization"
         (change)="onSpecializationChange()"
         class="filter-select specialization-select"
-        [disabled]="!selectedFilters.school">
+        [disabled]="!selectedFilters.school"
+      >
         <option value="">-- Selecteaza specializarea --</option>
         <option *ngFor="let spec of specializations" [value]="spec">
-          {{spec}}
+          {{ spec }}
         </option>
       </select>
     </div>
 
     <div class="filter-group">
-      <button 
-        type="button" 
-        (click)="addCombination()" 
+      <button
+        type="button"
+        (click)="addCombination()"
         class="add-button"
-        [disabled]="!selectedFilters.school || !selectedFilters.specialization">
+        [disabled]="!selectedFilters.school || !selectedFilters.specialization"
+      >
         Adauga la grafic
       </button>
     </div>
@@ -46,12 +49,29 @@
     </div>
   </div>
 
-  <div class="selected-combinations" *ngIf="selectedFilters.selectedCombinations.length > 0">
+  <div
+    class="selected-combinations"
+    *ngIf="selectedFilters.selectedCombinations.length > 0"
+  >
     <h4>Specializari selectate pentru grafic:</h4>
     <div class="combinations-list">
-      <div class="combination-item" *ngFor="let combination of selectedFilters.selectedCombinations; let i = index">
-        <span class="combination-text">{{combination.school}} - {{combination.specialization}}</span>
-        <button type="button" (click)="removeCombination(i)" class="remove-button">×</button>
+      <div
+        class="combination-item"
+        *ngFor="
+          let combination of selectedFilters.selectedCombinations;
+          let i = index
+        "
+      >
+        <span class="combination-text"
+          >{{ combination.school }} - {{ combination.specialization }}</span
+        >
+        <button
+          type="button"
+          (click)="removeCombination(i)"
+          class="remove-button"
+        >
+          ×
+        </button>
       </div>
     </div>
   </div>

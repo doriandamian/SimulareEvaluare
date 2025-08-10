@@ -13,7 +13,11 @@ export class RepartizareFormComponent {
   medieAdmitere = '';
   medieAbsolvire = '';
 
-  @Output() search = new EventEmitter<{ year: number; madm: number; mabs?: number }>();
+  @Output() search = new EventEmitter<{
+    year: number;
+    madm: number;
+    mabs?: number;
+  }>();
 
   onSubmit() {
     const madm = parseFloat(this.medieAdmitere);

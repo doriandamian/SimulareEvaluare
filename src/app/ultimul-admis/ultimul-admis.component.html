@@ -1,6 +1,6 @@
 <div class="ultimul-admis-container">
   <div class="header">
-    <button class="back-button" (click)="goBack()">← Înapoi</button>
+    <button class="back-button" (click)="goBack()">← Inapoi</button>
   </div>
   <div class="page-header">
     <h1>Ultimul Admis la Liceu</h1>
@@ -13,16 +13,16 @@
     [schools]="availableSchools"
     [specializations]="availableSpecializations"
     [selectedFilters]="currentFilters"
-    (filtersChange)="onFiltersChange($event)">
+    (filtersChange)="onFiltersChange($event)"
+  >
   </app-ultimul-admis-filters>
 
   <app-ultimul-admis-chart
     [allData]="allData"
-    [selectedCombinations]="currentFilters.selectedCombinations">
+    [selectedCombinations]="currentFilters.selectedCombinations"
+  >
   </app-ultimul-admis-chart>
 
-  <app-ultimul-admis-table
-    [data]="filteredData"
-    [loading]="isLoading">
+  <app-ultimul-admis-table [data]="filteredData" [loading]="isLoading">
   </app-ultimul-admis-table>
 </div>

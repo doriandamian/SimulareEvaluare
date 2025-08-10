@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './statistici-en.component.html',
-  styleUrl: './statistici-en.component.scss'
+  styleUrl: './statistici-en.component.scss',
 })
 export class StatisticiEnComponent {
+  showFourthButton = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   goTo(route: string) {
     if (route === 'repartizare') {
@@ -20,7 +21,6 @@ export class StatisticiEnComponent {
     } else if (route === 'contestatii') {
       this.router.navigate(['/contestatii']);
     }
-    
   }
 
   goBack() {

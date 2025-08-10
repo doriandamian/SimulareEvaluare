@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EnDataService, SchoolSpecialization, YearlyAdmissionData } from './services/en-data.service';
-import { UltimulAdmisFiltersComponent, UltimulAdmisFilters } from './ultimul-admis-filters/ultimul-admis-filters.component';
+import {
+  EnDataService,
+  SchoolSpecialization,
+  YearlyAdmissionData,
+} from './services/en-data.service';
+import {
+  UltimulAdmisFiltersComponent,
+  UltimulAdmisFilters,
+} from './ultimul-admis-filters/ultimul-admis-filters.component';
 import { UltimulAdmisTableComponent } from './ultimul-admis-table/ultimul-admis-table.component';
 import { UltimulAdmisChartComponent } from './ultimul-admis-chart/ultimul-admis-chart.component';
 
@@ -12,10 +19,10 @@ import { UltimulAdmisChartComponent } from './ultimul-admis-chart/ultimul-admis-
     CommonModule,
     UltimulAdmisFiltersComponent,
     UltimulAdmisTableComponent,
-    UltimulAdmisChartComponent
+    UltimulAdmisChartComponent,
   ],
   templateUrl: './ultimul-admis.component.html',
-  styleUrl: './ultimul-admis.component.scss'
+  styleUrl: './ultimul-admis.component.scss',
 })
 export class UltimulAdmisComponent implements OnInit {
   isLoading = false;
@@ -27,10 +34,10 @@ export class UltimulAdmisComponent implements OnInit {
   currentFilters: UltimulAdmisFilters = {
     school: '',
     specialization: '',
-    selectedCombinations: []
+    selectedCombinations: [],
   };
 
-  constructor(private enDataService: EnDataService) { }
+  constructor(private enDataService: EnDataService) {}
 
   async ngOnInit() {
     await this.loadData();
@@ -63,10 +70,11 @@ export class UltimulAdmisComponent implements OnInit {
     this.availableSchools = this.enDataService.getUniqueSchools(this.allData);
 
     if (this.currentFilters.school) {
-      this.availableSpecializations = this.enDataService.getSpecializationsForSchool(
-        this.allData,
-        this.currentFilters.school
-      );
+      this.availableSpecializations =
+        this.enDataService.getSpecializationsForSchool(
+          this.allData,
+          this.currentFilters.school
+        );
     } else {
       this.availableSpecializations = [];
     }
@@ -74,12 +82,17 @@ export class UltimulAdmisComponent implements OnInit {
 
   private applyFilters() {
     if (this.currentFilters.selectedCombinations.length > 0) {
-      this.filteredData = this.allData.filter(item =>
-        this.currentFilters.selectedCombinations.some(combo =>
-          combo.school === item.school && combo.specialization === item.specialization
+      this.filteredData = this.allData.filter((item) =>
+        this.currentFilters.selectedCombinations.some(
+          (combo) =>
+            combo.school === item.school &&
+            combo.specialization === item.specialization
         )
       );
-    } else if (this.currentFilters.school && this.currentFilters.specialization) {
+    } else if (
+      this.currentFilters.school &&
+      this.currentFilters.specialization
+    ) {
       this.filteredData = this.enDataService.filterData(
         this.allData,
         this.currentFilters.school,

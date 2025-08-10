@@ -1,30 +1,58 @@
-$bg-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.page-description {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 400;
+  max-width: 700px;
+  text-shadow: 0 2px 8px rgba(123, 95, 201, 0.18),
+    0 1.5px 8px rgba(0, 0, 0, 0.12);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  border-radius: 8px;
+}
+
+.ultimul-admis-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  background: transparent;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(123, 95, 201, 0.1),
+    0 1.5px 8px rgba(123, 95, 201, 0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
 $card-bg: #fff;
 $shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 $shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.18);
 $padding: 2rem;
 $radius: 16px;
-$font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-$primary-color: #667eea;
+$font-stack: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+$primary-color: #7b5fc9;
 $text-color: #2d3748;
 
 .header {
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 2rem;
+  height: 0;
+  z-index: 2;
+}
+.back-button {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
 }
 
 .back-button {
-  background: #fff;
+  background: linear-gradient(90deg, #ede9fe 0%, #fff 100%);
   border: 2px solid $primary-color;
-  border-radius: 8px;
-  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  padding: 0.7rem 1.6rem;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 700;
   color: $primary-color;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+  box-shadow: 0 2px 12px rgba(123, 95, 201, 0.1);
   transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
   outline: none;
   margin-left: 0;
@@ -32,30 +60,23 @@ $text-color: #2d3748;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  z-index: 3;
 }
 
-.back-button:hover, .back-button:focus {
+.back-button:hover,
+.back-button:focus {
   background: $primary-color;
   color: #fff;
   border-color: darken($primary-color, 10%);
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.18);
+  box-shadow: 0 6px 24px rgba(123, 95, 201, 0.18);
 }
-$bg-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-$card-bg: #fff;
-$shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-$shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.18);
-$padding: 2rem;
-$radius: 16px;
-$font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-$primary-color: #667eea;
-$text-color: #2d3748;
 
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 3rem 1rem;
-  background: $bg-color;
+  background: $primary-color;
   font-family: $font-stack;
   min-height: 100vh;
   color: $text-color;
@@ -65,13 +86,13 @@ $text-color: #2d3748;
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: $bg-color;
+    background: $primary-color;
     z-index: -1;
   }
 
@@ -150,7 +171,8 @@ $text-color: #2d3748;
       margin-bottom: 1.5rem;
     }
 
-    .stats, canvas {
+    .stats,
+    canvas {
       max-width: 100%;
       margin: 1rem 0;
       padding: 1.5rem;

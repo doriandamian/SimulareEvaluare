@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 export interface UltimulAdmisFilters {
   school: string;
   specialization: string;
-  selectedCombinations: Array<{school: string, specialization: string}>;
+  selectedCombinations: Array<{ school: string; specialization: string }>;
 }
 
 @Component({
@@ -13,7 +13,7 @@ export interface UltimulAdmisFilters {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './ultimul-admis-filters.component.html',
-  styleUrl: './ultimul-admis-filters.component.scss'
+  styleUrl: './ultimul-admis-filters.component.scss',
 })
 export class UltimulAdmisFiltersComponent {
   @Input() schools: string[] = [];
@@ -21,7 +21,7 @@ export class UltimulAdmisFiltersComponent {
   @Input() selectedFilters: UltimulAdmisFilters = {
     school: '',
     specialization: '',
-    selectedCombinations: []
+    selectedCombinations: [],
   };
 
   @Output() filtersChange = new EventEmitter<UltimulAdmisFilters>();
@@ -39,22 +39,28 @@ export class UltimulAdmisFiltersComponent {
     if (this.selectedFilters.school && this.selectedFilters.specialization) {
       const combination = {
         school: this.selectedFilters.school,
-        specialization: this.selectedFilters.specialization
+        specialization: this.selectedFilters.specialization,
       };
-      
-      const exists = this.selectedFilters.selectedCombinations.some(c => 
-        c.school === combination.school && c.specialization === combination.specialization
+
+      const exists = this.selectedFilters.selectedCombinations.some(
+        (c) =>
+          c.school === combination.school &&
+          c.specialization === combination.specialization
       );
-      
+
       if (!exists) {
-        this.selectedFilters.selectedCombinations = [...this.selectedFilters.selectedCombinations, combination];
+        this.selectedFilters.selectedCombinations = [
+          ...this.selectedFilters.selectedCombinations,
+          combination,
+        ];
         this.filtersChange.emit({ ...this.selectedFilters });
       }
     }
   }
 
   removeCombination(index: number) {
-    this.selectedFilters.selectedCombinations = this.selectedFilters.selectedCombinations.filter((_, i) => i !== index);
+    this.selectedFilters.selectedCombinations =
+      this.selectedFilters.selectedCombinations.filter((_, i) => i !== index);
     this.filtersChange.emit({ ...this.selectedFilters });
   }
 
@@ -62,7 +68,7 @@ export class UltimulAdmisFiltersComponent {
     this.selectedFilters = {
       school: '',
       specialization: '',
-      selectedCombinations: []
+      selectedCombinations: [],
     };
     this.filtersChange.emit(this.selectedFilters);
   }

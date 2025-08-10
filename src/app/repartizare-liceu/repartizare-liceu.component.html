@@ -3,6 +3,9 @@
     <button class="back-button" (click)="goBack()">← Inapoi</button>
   </div>
   <app-repartizare-form (search)="onSearch($event)"></app-repartizare-form>
-  <app-statistics-panel [year]="selectedYear" [statistici]="statistici"></app-statistics-panel>
+  <app-statistics-panel
+    [year]="selectedYear"
+    [statistici]="statistici"
+  ></app-statistics-panel>
   <app-sugestii-liceu [candidati]="sugestii"></app-sugestii-liceu>
 </div>

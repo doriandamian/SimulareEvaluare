@@ -8,10 +8,18 @@
   </select>
 
   <label>Introdu media ta de admitere:</label>
-  <input [(ngModel)]="medieAdmitere" class="form-control" placeholder="ex: 8.50" />
+  <input
+    [(ngModel)]="medieAdmitere"
+    class="form-control"
+    placeholder="ex: 8.50"
+  />
 
   <label>Introdu media generală de absolvire (opțional):</label>
-  <input [(ngModel)]="medieAbsolvire" class="form-control" placeholder="ex: 9.70" />
+  <input
+    [(ngModel)]="medieAbsolvire"
+    class="form-control"
+    placeholder="ex: 9.70"
+  />
 
   <button (click)="onSubmit()" class="btn btn-primary mt-2">Caută</button>
 </div>
