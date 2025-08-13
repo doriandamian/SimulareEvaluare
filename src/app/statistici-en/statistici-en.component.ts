@@ -20,6 +20,8 @@ export class StatisticiEnComponent {
       this.router.navigate(['/ultimul-admis']);
     } else if (route === 'contestatii') {
       this.router.navigate(['/contestatii']);
+    } else if (route === 'grad-ocupare') {
+      this.router.navigate(['/grad-ocupare']);
     }
   }
 

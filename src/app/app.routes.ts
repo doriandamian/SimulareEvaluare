@@ -5,6 +5,7 @@ import { StatisticiBACComponent } from './statistici-bac/statistici-bac.componen
 import { StatisticiEnComponent } from './statistici-en/statistici-en.component';
 import { UltimulAdmisComponent } from './ultimul-admis/ultimul-admis.component';
 import { IstoricContestatiiComponent } from './istoric-contestatii/istoric-contestatii.component';
+import { GradOcupareComponent } from './grad-ocupare/grad-ocupare.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'statistici-bac', component: StatisticiBACComponent },
   { path:'statisticien', component: StatisticiEnComponent},
   { path: 'ultimul-admis', component: UltimulAdmisComponent },
-  { path:'contestatii', component: IstoricContestatiiComponent}
+  { path:'contestatii', component: IstoricContestatiiComponent},
+  { path: 'grad-ocupare', component: GradOcupareComponent }
 ];
