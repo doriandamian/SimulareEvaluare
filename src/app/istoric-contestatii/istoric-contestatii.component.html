@@ -13,11 +13,11 @@
 </div>
 
 <div class="graph-switch">
-  <label>
-    <input type="radio" name="graphType" value="note" [(ngModel)]="selectedGraph" (change)="onGraphSwitch()"> Evoluția notelor
+  <label (click)="selectedGraph = 'note'; onGraphSwitch()" [class.selected]="selectedGraph === 'note'">
+    Evoluția notelor
   </label>
-  <label>
-    <input type="radio" name="graphType" value="deviatie" [(ngModel)]="selectedGraph" (change)="onGraphSwitch()"> Devierea față de nota inițială
+  <label (click)="selectedGraph = 'deviatie'; onGraphSwitch()" [class.selected]="selectedGraph === 'deviatie'">
+    Devierea față de nota inițială
   </label>
 </div>
 
