@@ -49,7 +49,7 @@ interface SchoolSpecializationOccupancy {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './grad-ocupare.component.html',
-  styleUrl: './grad-ocupare.component.scss'
+  styleUrl: './grad-ocupare.component.scss',
 })
 export class GradOcupareComponent implements OnInit {
   userPosition: number | null = null;
@@ -79,22 +79,25 @@ export class GradOcupareComponent implements OnInit {
       error: (error) => {
         console.error('Error loading candidate data:', error);
         this.isLoading = false;
-      }
+      },
     });
   }
 
   processRawCandidates(rawData: CandidateData[]): ProcessedCandidate[] {
     const validCandidates = rawData
-      .filter(candidate => this.isValidCandidate(candidate))
-      .map(candidate => ({
+      .filter((candidate) => this.isValidCandidate(candidate))
+      .map((candidate) => ({
         ...candidate,
         cleanSchool: this.cleanSchoolName(candidate.h),
         cleanSpecialization: this.cleanSpecializationName(candidate.sp),
         cleanLanguage: this.cleanLanguageName(candidate.sp),
         admissionGrade: parseFloat(candidate.madm),
-        overallPosition: 0 // Will be set after sorting
+        overallPosition: 0, // Will be set after sorting
       }))
-      .filter(candidate => !isNaN(candidate.admissionGrade) && candidate.admissionGrade > 0);
+      .filter(
+        (candidate) =>
+          !isNaN(candidate.admissionGrade) && candidate.admissionGrade > 0
+      );
 
     validCandidates.sort((a, b) => b.admissionGrade - a.admissionGrade);
     validCandidates.forEach((candidate, index) => {
@@ -105,20 +108,24 @@ export class GradOcupareComponent implements OnInit {
   }
 
   isValidCandidate(candidate: CandidateData): boolean {
-    return !!(candidate.h && candidate.h.trim() !== '' && 
-              candidate.sp && candidate.sp.trim() !== '' &&
-              !candidate.sp.includes('Nerepartizat') &&
-              !candidate.h.includes('Nerepartizat'));
+    return !!(
+      candidate.h &&
+      candidate.h.trim() !== '' &&
+      candidate.sp &&
+      candidate.sp.trim() !== '' &&
+      !candidate.sp.includes('Nerepartizat') &&
+      !candidate.h.includes('Nerepartizat')
+    );
   }
 
   cleanSchoolName(schoolHtml: string): string {
     if (!schoolHtml) return '';
-    
+
     const bTagMatch = schoolHtml.match(/<b>(.*?)<\/b>/);
     if (bTagMatch && bTagMatch[1]) {
       return bTagMatch[1].trim();
     }
-    
+
     const textContent = this.extractTextFromHtml(schoolHtml);
     const lines = textContent.split('\n');
     return (lines[0] || textContent).trim();
@@ -126,10 +133,10 @@ export class GradOcupareComponent implements OnInit {
 
   cleanSpecializationName(specializationHtml: string): string {
     if (!specializationHtml) return '';
-    
+
     const bTagMatch = specializationHtml.match(/<b>(.*?)<\/b>/);
     let baseSpecialization = '';
-    
+
     if (bTagMatch && bTagMatch[1]) {
       baseSpecialization = bTagMatch[1].trim();
       baseSpecialization = baseSpecialization.replace(/^\(\d+\)\s*/, '');
@@ -139,22 +146,22 @@ export class GradOcupareComponent implements OnInit {
       baseSpecialization = lines[0] || textContent;
       baseSpecialization = baseSpecialization.replace(/^\(\d+\)\s*/, '');
     }
-    
+
     return baseSpecialization.trim();
   }
 
   cleanLanguageName(specializationHtml: string): string {
     if (!specializationHtml) return 'Limba română';
-    
+
     const brMatch = specializationHtml.match(/<br\/?>(.*)$/i);
     if (!brMatch || !brMatch[1]) {
       return 'Limba română';
     }
-    
+
     let languagesPart = brMatch[1].trim();
-    
+
     if (languagesPart.includes('/')) {
-      const languages = languagesPart.split('/').map(lang => {
+      const languages = languagesPart.split('/').map((lang) => {
         let cleanLang = lang.trim();
         cleanLang = cleanLang.replace(/^Limba\s+/i, '');
         if (!cleanLang || cleanLang === 'română' || cleanLang === 'romÃ¢nÄƒ') {
@@ -162,11 +169,11 @@ export class GradOcupareComponent implements OnInit {
         }
         return cleanLang.charAt(0).toUpperCase() + cleanLang.slice(1);
       });
-      
+
       return `Limba ${languages.join('/')}`;
     } else {
       let language = languagesPart.replace(/^Limba\s+/i, '');
-      
+
       if (!language || language === 'română' || language === 'romÃ¢nÄƒ') {
         return 'Limba română';
       } else {
@@ -178,7 +185,7 @@ export class GradOcupareComponent implements OnInit {
 
   private extractTextFromHtml(htmlString: string): string {
     if (!htmlString) return '';
-    
+
     const div = document.createElement('div');
     div.innerHTML = htmlString;
     return div.textContent || div.innerText || '';
@@ -186,9 +193,9 @@ export class GradOcupareComponent implements OnInit {
 
   processSchoolSpecializations() {
     const specializationMap = new Map<string, ProcessedCandidate[]>();
-    
+
     // Group candidates by school + specialization + language
-    this.allCandidates.forEach(candidate => {
+    this.allCandidates.forEach((candidate) => {
       const key = `${candidate.cleanSchool}|${candidate.cleanSpecialization}|${candidate.cleanLanguage}`;
       if (!specializationMap.has(key)) {
         specializationMap.set(key, []);
@@ -196,29 +203,33 @@ export class GradOcupareComponent implements OnInit {
       specializationMap.get(key)!.push(candidate);
     });
 
-    this.schoolSpecializations = Array.from(specializationMap.entries()).map(([key, candidates]) => {
-      const [school, specialization, language] = key.split('|');
-      
-      // Sort candidates by position (lowest position = best, highest position = worst)
-      const sortedCandidates = candidates.sort((a, b) => a.overallPosition - b.overallPosition);
-      const bestCandidate = sortedCandidates[0]; 
-      const worstCandidate = sortedCandidates[sortedCandidates.length - 1];
-      
-      return {
-        school,
-        specialization,
-        language,
-        indexRange: `${bestCandidate.overallPosition}-${worstCandidate.overallPosition}`,
-        minIndex: bestCandidate.overallPosition,
-        maxIndex: worstCandidate.overallPosition,
-        totalSlots: candidates.length,
-        occupiedSlots: 0,
-        freeSlots: 0, 
-        occupancyRate: 0, 
-        lastAdmittedGrade: worstCandidate.admissionGrade,
-        occupancyStatus: 'complet' as const
-      };
-    }).sort((a, b) => a.minIndex - b.minIndex);
+    this.schoolSpecializations = Array.from(specializationMap.entries())
+      .map(([key, candidates]) => {
+        const [school, specialization, language] = key.split('|');
+
+        // Sort candidates by position (lowest position = best, highest position = worst)
+        const sortedCandidates = candidates.sort(
+          (a, b) => a.overallPosition - b.overallPosition
+        );
+        const bestCandidate = sortedCandidates[0];
+        const worstCandidate = sortedCandidates[sortedCandidates.length - 1];
+
+        return {
+          school,
+          specialization,
+          language,
+          indexRange: `${bestCandidate.overallPosition}-${worstCandidate.overallPosition}`,
+          minIndex: bestCandidate.overallPosition,
+          maxIndex: worstCandidate.overallPosition,
+          totalSlots: candidates.length,
+          occupiedSlots: 0,
+          freeSlots: 0,
+          occupancyRate: 0,
+          lastAdmittedGrade: worstCandidate.admissionGrade,
+          occupancyStatus: 'complet' as const,
+        };
+      })
+      .sort((a, b) => a.minIndex - b.minIndex);
   }
 
   analyzeOccupancy() {
@@ -229,30 +240,40 @@ export class GradOcupareComponent implements OnInit {
       this.userGrade = this.allCandidates[this.userPosition - 1].admissionGrade;
     } else {
       // Position is beyond all candidates, use minimum grade
-      this.userGrade = Math.min(...this.allCandidates.map(c => c.admissionGrade)) - 0.1;
+      this.userGrade =
+        Math.min(...this.allCandidates.map((c) => c.admissionGrade)) - 0.1;
     }
 
     this.completOcupate = [];
     this.partialOcupate = [];
     this.neocupate = [];
 
-    this.schoolSpecializations.forEach(spec => {
-      const candidatesAtSpecialization = this.allCandidates.filter(c => 
-        c.cleanSchool === spec.school && 
-        c.cleanSpecialization === spec.specialization && 
-        c.cleanLanguage === spec.language
+    this.schoolSpecializations.forEach((spec) => {
+      const candidatesAtSpecialization = this.allCandidates.filter(
+        (c) =>
+          c.cleanSchool === spec.school &&
+          c.cleanSpecialization === spec.specialization &&
+          c.cleanLanguage === spec.language
       );
-      
+
       // Count candidates with better/worse positions than user
-      spec.occupiedSlots = candidatesAtSpecialization.filter(c => c.overallPosition < this.userPosition!).length;
-      spec.freeSlots = candidatesAtSpecialization.filter(c => c.overallPosition >= this.userPosition!).length;
-      spec.occupancyRate = Math.floor((spec.occupiedSlots / spec.totalSlots) * 10000) / 100;
-      
+      spec.occupiedSlots = candidatesAtSpecialization.filter(
+        (c) => c.overallPosition < this.userPosition!
+      ).length;
+      spec.freeSlots = candidatesAtSpecialization.filter(
+        (c) => c.overallPosition >= this.userPosition!
+      ).length;
+      spec.occupancyRate =
+        Math.floor((spec.occupiedSlots / spec.totalSlots) * 10000) / 100;
+
       // Determine occupancy status based on user position vs index range
       if (this.userPosition! > spec.maxIndex) {
         spec.occupancyStatus = 'complet';
         this.completOcupate.push(spec);
-      } else if (this.userPosition! > spec.minIndex && this.userPosition! <= spec.maxIndex) {
+      } else if (
+        this.userPosition! > spec.minIndex &&
+        this.userPosition! <= spec.maxIndex
+      ) {
         spec.occupancyStatus = 'partial';
         this.partialOcupate.push(spec);
       } else {

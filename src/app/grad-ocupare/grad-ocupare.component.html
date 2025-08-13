@@ -2,32 +2,36 @@
   <div class="header">
     <button class="back-button" (click)="goBack()">← Inapoi</button>
   </div>
-  
+
   <h1>Analiza Grad Ocupare Specializari 2024</h1>
-  
+
   <div class="input-section">
     <label for="userPosition">Introduceti pozitia (ex: 500):</label>
-    <input 
-      type="number" 
-      id="userPosition" 
-      [(ngModel)]="userPosition" 
+    <input
+      type="number"
+      id="userPosition"
+      [(ngModel)]="userPosition"
       placeholder="500"
-      min="1">
-    <button (click)="analyzeOccupancy()" [disabled]="!userPosition || isLoading">
+      min="1"
+    />
+    <button
+      (click)="analyzeOccupancy()"
+      [disabled]="!userPosition || isLoading"
+    >
       Analizeaza
     </button>
   </div>
 
   <div *ngIf="analyzed && userGrade" class="user-info">
-    <p><strong>Pozitia:</strong> {{userPosition}} (Media corespunzatoare: {{userGrade | number:'1.2-2'}})</p>
+    <p>
+      <strong>Pozitia:</strong> {{ userPosition }} (Media corespunzatoare:
+      {{ userGrade | number : "1.2-2" }})
+    </p>
   </div>
 
-  <div *ngIf="isLoading" class="loading">
-    Se incarca datele...
-  </div>
+  <div *ngIf="isLoading" class="loading">Se incarca datele...</div>
 
   <div *ngIf="analyzed && !isLoading" class="results">
-    
     <div class="section">
       <h2>Specializari complet ocupate</h2>
       <table *ngIf="completOcupate.length > 0; else noDataComplete">
@@ -44,15 +48,15 @@
         <tbody>
           <tr *ngFor="let item of completOcupate">
             <td class="school-specialization-cell">
-              <div class="school-name">{{item.school}}</div>
-              <div class="specialization-name">{{item.specialization}}</div>
-              <div class="language-name">{{item.language}}</div>
+              <div class="school-name">{{ item.school }}</div>
+              <div class="specialization-name">{{ item.specialization }}</div>
+              <div class="language-name">{{ item.language }}</div>
             </td>
-            <td>{{item.indexRange}}</td>
-            <td>{{item.occupiedSlots}}</td>
-            <td>{{item.freeSlots}}</td>
-            <td>{{item.occupancyRate | number:'1.2-2'}}%</td>
-            <td>{{item.lastAdmittedGrade | number:'1.2-2'}}</td>
+            <td>{{ item.indexRange }}</td>
+            <td>{{ item.occupiedSlots }}</td>
+            <td>{{ item.freeSlots }}</td>
+            <td>{{ item.occupancyRate | number : "1.2-2" }}%</td>
+            <td>{{ item.lastAdmittedGrade | number : "1.2-2" }}</td>
           </tr>
         </tbody>
       </table>
@@ -77,15 +81,15 @@
         <tbody>
           <tr *ngFor="let item of partialOcupate">
             <td class="school-specialization-cell">
-              <div class="school-name">{{item.school}}</div>
-              <div class="specialization-name">{{item.specialization}}</div>
-              <div class="language-name">{{item.language}}</div>
+              <div class="school-name">{{ item.school }}</div>
+              <div class="specialization-name">{{ item.specialization }}</div>
+              <div class="language-name">{{ item.language }}</div>
             </td>
-            <td>{{item.indexRange}}</td>
-            <td>{{item.occupiedSlots}}</td>
-            <td>{{item.freeSlots}}</td>
-            <td>{{item.occupancyRate | number:'1.2-2'}}%</td>
-            <td>{{item.lastAdmittedGrade | number:'1.2-2'}}</td>
+            <td>{{ item.indexRange }}</td>
+            <td>{{ item.occupiedSlots }}</td>
+            <td>{{ item.freeSlots }}</td>
+            <td>{{ item.occupancyRate | number : "1.2-2" }}%</td>
+            <td>{{ item.lastAdmittedGrade | number : "1.2-2" }}</td>
           </tr>
         </tbody>
       </table>
@@ -110,22 +114,23 @@
         <tbody>
           <tr *ngFor="let item of neocupate">
             <td class="school-specialization-cell">
-              <div class="school-name">{{item.school}}</div>
-              <div class="specialization-name">{{item.specialization}}</div>
-              <div class="language-name">{{item.language}}</div>
+              <div class="school-name">{{ item.school }}</div>
+              <div class="specialization-name">{{ item.specialization }}</div>
+              <div class="language-name">{{ item.language }}</div>
             </td>
-            <td>{{item.indexRange}}</td>
-            <td>{{item.occupiedSlots}}</td>
-            <td>{{item.freeSlots}}</td>
-            <td>{{item.occupancyRate | number:'1.2-2'}}%</td>
-            <td>{{item.lastAdmittedGrade | number:'1.2-2'}}</td>
+            <td>{{ item.indexRange }}</td>
+            <td>{{ item.occupiedSlots }}</td>
+            <td>{{ item.freeSlots }}</td>
+            <td>{{ item.occupancyRate | number : "1.2-2" }}%</td>
+            <td>{{ item.lastAdmittedGrade | number : "1.2-2" }}</td>
           </tr>
         </tbody>
       </table>
       <ng-template #noDataEmpty>
-        <p>Nu exista specializari cu locuri disponibile pentru aceasta pozitie.</p>
+        <p>
+          Nu exista specializari cu locuri disponibile pentru aceasta pozitie.
+        </p>
       </ng-template>
     </div>
-
   </div>
 </div>
