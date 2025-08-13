@@ -44,6 +44,7 @@ interface Note {
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
+
 export class IstoricContestatiiComponent implements OnInit {
   private chartNoteInstance: Chart | null = null;
   private chartDeviatieInstance: Chart | null = null;
@@ -54,6 +55,31 @@ export class IstoricContestatiiComponent implements OnInit {
   selectedCounty = 'BV';
   allData: { [county: string]: EvCandidate[] } = {};
   contested: EvCandidate[] = [];
+  selectedGraph: 'note' | 'deviatie' = 'note';
+  onGraphSwitch() {
+    // Wait for DOM to update, then render the selected chart for the current county
+    setTimeout(() => {
+      this.renderSelectedChart();
+    });
+  }
+
+  private renderSelectedChart() {
+    const data = this.allData[this.selectedCounty] || [];
+    const safeContested: EvCandidate[] = data.filter(
+      (e: EvCandidate) => e.ri !== null && e.ra !== null
+    );
+    const labels = safeContested.map((e: EvCandidate) => e.name);
+    const riValues = safeContested.map((e: EvCandidate) => e.ri as number);
+    const raValues = safeContested.map((e: EvCandidate) => e.ra as number);
+    const deviation = safeContested.map(
+      (e: EvCandidate) => (e.ra as number) - (e.ri as number)
+    );
+    if (this.selectedGraph === 'note') {
+      this.renderChartNote(labels, riValues, raValues);
+    } else {
+      this.renderChartDeviatie(labels, riValues, raValues, deviation);
+    }
+  }
 
   constructor(private evCache: EvCacheService) { }
 
@@ -110,22 +136,17 @@ export class IstoricContestatiiComponent implements OnInit {
       <p>Diferenta medie: <strong>${mediaDiferenta}</strong> puncte</p>
     `;
 
-    this.renderCharts(labels, riValues, raValues, deviation);
+    this.renderSelectedChart();
   }
 
-  private renderCharts(
-    labels: string[],
-    riValues: number[],
-    raValues: number[],
-    deviation: number[]
-  ): void {
+  private renderChartNote(labels: string[], riValues: number[], raValues: number[]) {
     if (this.chartNoteInstance) {
       this.chartNoteInstance.destroy();
+      this.chartNoteInstance = null;
     }
-    if (this.chartDeviatieInstance) {
-      this.chartDeviatieInstance.destroy();
-    }
-
+    // Only render if the canvas is present
+    const canvas = document.getElementById('chartNote') as HTMLCanvasElement;
+    if (!canvas) return;
     this.chartNoteInstance = new Chart('chartNote', {
       type: 'line',
       data: {
@@ -176,7 +197,21 @@ export class IstoricContestatiiComponent implements OnInit {
         },
       },
     });
+    // Destroy the other chart if it exists
+    if (this.chartDeviatieInstance) {
+      this.chartDeviatieInstance.destroy();
+      this.chartDeviatieInstance = null;
+    }
+  }
 
+  private renderChartDeviatie(labels: string[], riValues: number[], raValues: number[], deviation: number[]) {
+    if (this.chartDeviatieInstance) {
+      this.chartDeviatieInstance.destroy();
+      this.chartDeviatieInstance = null;
+    }
+    // Only render if the canvas is present
+    const canvas = document.getElementById('chartDeviatie') as HTMLCanvasElement;
+    if (!canvas) return;
     this.chartDeviatieInstance = new Chart('chartDeviatie', {
       type: 'bar',
       data: {
@@ -219,6 +254,11 @@ export class IstoricContestatiiComponent implements OnInit {
         },
       },
     });
+    // Destroy the other chart if it exists
+    if (this.chartNoteInstance) {
+      this.chartNoteInstance.destroy();
+      this.chartNoteInstance = null;
+    }
   }
 
   goBack() {

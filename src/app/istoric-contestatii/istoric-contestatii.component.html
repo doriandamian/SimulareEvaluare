@@ -12,5 +12,14 @@
   <div [innerHTML]="statisticiHtml"></div>
 </div>
 
-<canvas id="chartNote" width="800" height="400"></canvas>
-<canvas id="chartDeviatie" width="800" height="400"></canvas>
+<div class="graph-switch">
+  <label>
+    <input type="radio" name="graphType" value="note" [(ngModel)]="selectedGraph" (change)="onGraphSwitch()"> Evoluția notelor
+  </label>
+  <label>
+    <input type="radio" name="graphType" value="deviatie" [(ngModel)]="selectedGraph" (change)="onGraphSwitch()"> Devierea față de nota inițială
+  </label>
+</div>
+
+<canvas *ngIf="selectedGraph === 'note'" id="chartNote" width="800" height="400"></canvas>
+<canvas *ngIf="selectedGraph === 'deviatie'" id="chartDeviatie" width="800" height="400"></canvas>
