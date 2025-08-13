@@ -58,17 +58,17 @@ export class EnDataService {
 
     const years = [2022, 2023, 2024];
     const allCandidates: ProcessedCandidate[] = [];
-    
+
     for (const year of years) {
       const yearCandidates = await this.loadCandidates(year);
       const validCandidates = yearCandidates.filter(candidate => this.isValidCandidate(candidate));
-      
+
       validCandidates.sort((a, b) => parseFloat(b.madm) - parseFloat(a.madm));
-      
+
       validCandidates.forEach((candidate, index) => {
         const cleanSchool = this.cleanSchoolName(candidate.h);
         const cleanSpecialization = this.cleanSpecializationName(candidate.sp);
-        
+
         allCandidates.push({
           ...candidate,
           year,
@@ -93,7 +93,7 @@ export class EnDataService {
       if (!response.ok) {
         throw new Error(`Failed to load EN data for year ${year}`);
       }
-      
+
       const data = await response.json();
       this.candidatesCache.set(year, data);
       return data;
@@ -105,26 +105,26 @@ export class EnDataService {
 
   async processAdmissionData(): Promise<SchoolSpecialization[]> {
     const allCandidates = await this.loadAllCandidates();
-    
+
     const groupedData = new Map<string, ProcessedCandidate[]>();
-    
+
     allCandidates.forEach(candidate => {
       const key = `${candidate.cleanSchool}|${candidate.cleanSpecialization}`;
-      
+
       if (!groupedData.has(key)) {
         groupedData.set(key, []);
       }
-      
+
       groupedData.get(key)!.push(candidate);
     });
 
     const results: SchoolSpecialization[] = [];
-    
+
     groupedData.forEach((candidates, key) => {
       const [school, specialization] = key.split('|');
-      
+
       const yearlyStats = new Map<number, YearlyAdmissionData>();
-      
+
       candidates.forEach(candidate => {
         if (!yearlyStats.has(candidate.year)) {
           yearlyStats.set(candidate.year, {
@@ -135,11 +135,11 @@ export class EnDataService {
           });
         }
       });
-      
+
       yearlyStats.forEach((stats, year) => {
         const yearCandidates = candidates.filter(c => c.year === year);
         const sortedByIndex = yearCandidates.sort((a, b) => a.overallIndex - b.overallIndex);
-        
+
         stats.totalCandidates = yearCandidates.length;
         if (sortedByIndex.length > 0) {
           const lastAdmitted = sortedByIndex[sortedByIndex.length - 1];
@@ -147,7 +147,7 @@ export class EnDataService {
           stats.lastAdmittedGrade = parseFloat(lastAdmitted.madm);
         }
       });
-      
+
       results.push({
         school,
         specialization,
@@ -159,20 +159,20 @@ export class EnDataService {
   }
 
   private isValidCandidate(candidate: CandidateData): boolean {
-    return !!(candidate.h && candidate.h.trim() !== '' && 
-              candidate.sp && candidate.sp.trim() !== '' &&
-              !candidate.sp.includes('Nerepartizat') &&
-              !candidate.h.includes('Nerepartizat'));
+    return !!(candidate.h && candidate.h.trim() !== '' &&
+      candidate.sp && candidate.sp.trim() !== '' &&
+      !candidate.sp.includes('Nerepartizat') &&
+      !candidate.h.includes('Nerepartizat'));
   }
 
   private cleanSchoolName(htmlString: string): string {
     if (!htmlString) return '';
-    
+
     const bTagMatch = htmlString.match(/<b>(.*?)<\/b>/);
     if (bTagMatch && bTagMatch[1]) {
       return bTagMatch[1].trim();
     }
-    
+
     const textContent = this.extractTextFromHtml(htmlString);
     const lines = textContent.split('\n');
     return (lines[0] || textContent).trim();
@@ -180,10 +180,10 @@ export class EnDataService {
 
   private cleanSpecializationName(htmlString: string): string {
     if (!htmlString) return '';
-    
+
     const bTagMatch = htmlString.match(/<b>(.*?)<\/b>/);
     let baseSpecialization = '';
-    
+
     if (bTagMatch && bTagMatch[1]) {
       baseSpecialization = bTagMatch[1].trim();
       baseSpecialization = baseSpecialization.replace(/^\(\d+\)\s*/, '');
@@ -193,26 +193,26 @@ export class EnDataService {
       baseSpecialization = lines[0] || textContent;
       baseSpecialization = baseSpecialization.replace(/^\(\d+\)\s*/, '');
     }
-    
+
     const brMatch = htmlString.match(/<br\/?>(.*)$/i);
     if (!brMatch || !brMatch[1]) {
       return baseSpecialization.trim();
     }
-    
+
     let languagesPart = brMatch[1].trim();
-    
+
     if (languagesPart.includes('/')) {
       const languages = languagesPart.split('/').map(lang => {
         let cleanLang = lang.trim();
         cleanLang = cleanLang.replace(/^Limba\s+/i, '');
         return cleanLang.charAt(0).toUpperCase() + cleanLang.slice(1);
       });
-      
+
       const languageString = languages.join('/');
       return `${baseSpecialization} - ${languageString}`;
     } else {
       let language = languagesPart.replace(/^Limba\s+/i, '');
-      
+
       if (language && language !== 'română' && language !== 'romÃ¢nÄƒ') {
         language = language.charAt(0).toUpperCase() + language.slice(1);
         return `${baseSpecialization} - ${language}`;
@@ -224,7 +224,7 @@ export class EnDataService {
 
   private extractTextFromHtml(htmlString: string): string {
     if (!htmlString) return '';
-    
+
     const div = document.createElement('div');
     div.innerHTML = htmlString;
     return div.textContent || div.innerText || '';
@@ -244,15 +244,15 @@ export class EnDataService {
 
   filterData(data: SchoolSpecialization[], school?: string, specialization?: string): SchoolSpecialization[] {
     let filtered = data;
-    
+
     if (school) {
       filtered = filtered.filter(item => item.school === school);
     }
-    
+
     if (specialization) {
       filtered = filtered.filter(item => item.specialization === specialization);
     }
-    
+
     return filtered;
   }
 }

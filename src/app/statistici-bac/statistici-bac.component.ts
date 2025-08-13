@@ -25,7 +25,7 @@ export class StatisticiBACComponent {
   currentCountyName = '';
   isLoading = false;
 
-  constructor(private dataService: BacDataService) {}
+  constructor(private dataService: BacDataService) { }
 
   async ngOnInit() {
     this.counties = await this.dataService.getAvailableCounties();

@@ -10,7 +10,7 @@ import { EvUrls } from '../assets/ev.urls';
 export class EvCacheService {
   private cache = new Map<string, EvCandidate[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   init(): Observable<EvCandidate[]> {
     const requests = Object.entries(EvUrls).map(([county, url]) =>

@@ -11,8 +11,8 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'repartizare', component: RepartizareLiceuComponent },
   { path: 'statistici-bac', component: StatisticiBACComponent },
-  { path:'statisticien', component: StatisticiEnComponent},
+  { path: 'statisticien', component: StatisticiEnComponent },
   { path: 'ultimul-admis', component: UltimulAdmisComponent },
-  { path:'contestatii', component: IstoricContestatiiComponent},
+  { path: 'contestatii', component: IstoricContestatiiComponent },
   { path: 'grad-ocupare', component: GradOcupareComponent }
 ];

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class StatisticiEnComponent {
   showFourthButton = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   goTo(route: string) {
     if (route === 'repartizare') {

@@ -63,6 +63,7 @@ body {
   width: 300px;
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
+
   h2 {
     color: #fff;
     font-size: 1.25rem;
@@ -70,12 +71,14 @@ body {
     margin-bottom: 0.7rem;
     letter-spacing: -0.5px;
   }
+
   p {
     color: #fff;
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 0;
   }
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -85,8 +88,7 @@ body {
 .card:first-child {
   background: linear-gradient(135deg, #7b5fc9 0%, #937bcc 100%);
 }
+
 .card:last-child {
   background: linear-gradient(-135deg, #2151a1 0%, #6778c6 100%);
 }
-
-/* Remove invalid selector and closing brace from previous code. */

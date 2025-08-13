@@ -7,17 +7,8 @@
 
   <div class="input-section">
     <label for="userPosition">Introduceti pozitia (ex: 500):</label>
-    <input
-      type="number"
-      id="userPosition"
-      [(ngModel)]="userPosition"
-      placeholder="500"
-      min="1"
-    />
-    <button
-      (click)="analyzeOccupancy()"
-      [disabled]="!userPosition || isLoading"
-    >
+    <input type="number" id="userPosition" [(ngModel)]="userPosition" placeholder="500" min="1" />
+    <button (click)="analyzeOccupancy()" [disabled]="!userPosition || isLoading">
       Analizeaza
     </button>
   </div>
@@ -99,7 +90,7 @@
     </div>
 
     <div class="section">
-      <h2>Specializari cu locuri disponibile</h2>
+      <h2>Specializari fara locuri ocupate</h2>
       <table *ngIf="neocupate.length > 0; else noDataEmpty">
         <thead>
           <tr>

@@ -28,7 +28,7 @@ export class UltimulAdmisChartComponent implements OnChanges {
   }> = [];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
   public chartType: ChartType = 'line';
   public chartData: ChartConfiguration['data'] = {

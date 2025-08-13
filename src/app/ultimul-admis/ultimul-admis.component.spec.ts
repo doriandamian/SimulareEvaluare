@@ -10,7 +10,7 @@ describe('UltimulAdmisComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UltimulAdmisComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(UltimulAdmisComponent);
     component = fixture.componentInstance;

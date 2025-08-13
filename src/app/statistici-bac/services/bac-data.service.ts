@@ -13,7 +13,7 @@ export interface CountyOption {
 export class BacDataService {
   private initialized = false;
 
-  constructor(private bacCacheService: BacCacheService) {}
+  constructor(private bacCacheService: BacCacheService) { }
 
   async getAvailableCounties(): Promise<CountyOption[]> {
     return Object.keys(BacUrls).map(code => ({
@@ -30,7 +30,7 @@ export class BacDataService {
     await this.initializeCache();
 
     const cachedData = this.bacCacheService.getCountyData(county);
-    
+
     return cachedData.map(candidate => this.convertCandidateToRaw(candidate));
   }
 
@@ -72,8 +72,8 @@ export class BacDataService {
   filterData(data: any[][], school: string, specialisation: string): any[][] {
     return data.filter(
       (row) =>
-        (school === 'Toate' || row[4] === school) && 
-        (specialisation === 'Toate' || row[7] === specialisation) 
+        (school === 'Toate' || row[4] === school) &&
+        (specialisation === 'Toate' || row[7] === specialisation)
     );
   }
 }

@@ -18,7 +18,7 @@ import { BacUrls } from '../assets/bac.urls';
 export class BacCacheServiceBackup {
   private cache = new Map<string, BacCandidate[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   init(): Observable<BacCandidate[]> {
     const counties = Object.entries(BacUrls);
@@ -94,7 +94,7 @@ export class BacCacheServiceBackup {
       return [];
     }
 
-    const rows = Array.from(table.querySelectorAll('tr')); 
+    const rows = Array.from(table.querySelectorAll('tr'));
     const candidates: BacCandidate[] = [];
 
     for (let i = 2; i < rows.length; i += 2) {

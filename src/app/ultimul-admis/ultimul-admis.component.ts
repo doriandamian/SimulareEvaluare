@@ -37,7 +37,7 @@ export class UltimulAdmisComponent implements OnInit {
     selectedCombinations: [],
   };
 
-  constructor(private enDataService: EnDataService) {}
+  constructor(private enDataService: EnDataService) { }
 
   async ngOnInit() {
     await this.loadData();

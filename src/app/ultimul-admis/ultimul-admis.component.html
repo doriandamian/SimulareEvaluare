@@ -9,18 +9,11 @@
     </p>
   </div>
 
-  <app-ultimul-admis-filters
-    [schools]="availableSchools"
-    [specializations]="availableSpecializations"
-    [selectedFilters]="currentFilters"
-    (filtersChange)="onFiltersChange($event)"
-  >
+  <app-ultimul-admis-filters [schools]="availableSchools" [specializations]="availableSpecializations"
+    [selectedFilters]="currentFilters" (filtersChange)="onFiltersChange($event)">
   </app-ultimul-admis-filters>
 
-  <app-ultimul-admis-chart
-    [allData]="allData"
-    [selectedCombinations]="currentFilters.selectedCombinations"
-  >
+  <app-ultimul-admis-chart [allData]="allData" [selectedCombinations]="currentFilters.selectedCombinations">
   </app-ultimul-admis-chart>
 
   <app-ultimul-admis-table [data]="filteredData" [loading]="isLoading">

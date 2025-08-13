@@ -4,11 +4,7 @@
 <h1>Analiza contestatii la romana</h1>
 <div class="stats">
   <label for="countySelect">Alege județul:</label>
-  <select
-    id="countySelect"
-    [(ngModel)]="selectedCounty"
-    (change)="onCountyChange()"
-  >
+  <select id="countySelect" [(ngModel)]="selectedCounty" (change)="onCountyChange()">
     <option *ngFor="let code of counties" [value]="code">
       {{ countyNames[code] }}
     </option>

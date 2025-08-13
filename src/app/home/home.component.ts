@@ -10,7 +10,7 @@ import { EvCacheService } from '../services/ev.cache.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  constructor(private router: Router, private evCacheService: EvCacheService) {}
+  constructor(private router: Router, private evCacheService: EvCacheService) { }
 
   goTo(route: string) {
     if (route === 'statisticien') {

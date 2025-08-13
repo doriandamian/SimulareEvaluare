@@ -7,13 +7,8 @@
   </h1>
 
   <div class="filters-section">
-    <app-filters
-      [counties]="counties"
-      [schools]="schools"
-      [rawData]="rawData"
-      (countyChanged)="onCountyChanged($event)"
-      (selectionChanged)="onFiltersChanged($event)"
-    >
+    <app-filters [counties]="counties" [schools]="schools" [rawData]="rawData" (countyChanged)="onCountyChanged($event)"
+      (selectionChanged)="onFiltersChanged($event)">
     </app-filters>
   </div>
 
@@ -27,9 +22,6 @@
   </div>
 
   <div class="summary-section">
-    <app-summary
-      [total]="filtered.length"
-      [media]="mediaGenerala"
-    ></app-summary>
+    <app-summary [total]="filtered.length" [media]="mediaGenerala"></app-summary>
   </div>
 </div>

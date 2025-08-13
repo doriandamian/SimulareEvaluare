@@ -10,7 +10,7 @@ import { BacUrls } from '../assets/bac.urls';
 export class BacCacheService {
   private cache = new Map<string, BacCandidate[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   init(): Observable<BacCandidate[]> {
     const counties = Object.entries(BacUrls);

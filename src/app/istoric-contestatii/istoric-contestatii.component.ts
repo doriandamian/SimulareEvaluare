@@ -55,7 +55,7 @@ export class IstoricContestatiiComponent implements OnInit {
   allData: { [county: string]: EvCandidate[] } = {};
   contested: EvCandidate[] = [];
 
-  constructor(private evCache: EvCacheService) {}
+  constructor(private evCache: EvCacheService) { }
 
   ngOnInit(): void {
     this.evCache.init().subscribe(() => {
@@ -93,17 +93,16 @@ export class IstoricContestatiiComponent implements OnInit {
     const mediaDiferenta =
       total > 0
         ? (
-            safeContested.reduce(
-              (acc: number, e: EvCandidate) =>
-                acc + ((e.ra as number) - (e.ri as number)),
-              0
-            ) / total
-          ).toFixed(3)
+          safeContested.reduce(
+            (acc: number, e: EvCandidate) =>
+              acc + ((e.ra as number) - (e.ri as number)),
+            0
+          ) / total
+        ).toFixed(3)
         : '0';
 
     this.statisticiHtml = `
-      <p>Total contestații${
-        this.filterInterval ? ' (8 ≤ nota inițială ≤ 9)' : ''
+      <p>Total contestații${this.filterInterval ? ' (8 ≤ nota inițială ≤ 9)' : ''
       }: <strong>${total}</strong></p>
       <p>Note crescute: <strong>${crescut}</strong></p>
       <p>Note scazute: <strong>${scazut}</strong></p>

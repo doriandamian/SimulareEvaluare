@@ -62,7 +62,7 @@ export class GradOcupareComponent implements OnInit {
   isLoading = false;
   analyzed = false;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     this.loadCandidateData();

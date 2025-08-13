@@ -24,7 +24,7 @@ export class RepartizareLiceuComponent {
   statistici: any = {};
   selectedYear = 2024;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
   onSearch(data: { year: number; madm: number; mabs?: number }) {
     this.selectedYear = data.year;
