@@ -276,6 +276,6 @@ export class GradOcupareComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/statistici-en']);
+    history.back();
   }
 }
