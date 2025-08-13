@@ -3,10 +3,10 @@
     <button class="back-button" (click)="goBack()">← Inapoi</button>
   </div>
   
-  <h1>Analiză Grad Ocupare Specializări 2024</h1>
+  <h1>Analiza Grad Ocupare Specializari 2024</h1>
   
   <div class="input-section">
-    <label for="userPosition">Introduceți poziția (ex: 500):</label>
+    <label for="userPosition">Introduceti pozitia (ex: 500):</label>
     <input 
       type="number" 
       id="userPosition" 
@@ -14,27 +14,27 @@
       placeholder="500"
       min="1">
     <button (click)="analyzeOccupancy()" [disabled]="!userPosition || isLoading">
-      Analizează
+      Analizeaza
     </button>
   </div>
 
   <div *ngIf="analyzed && userGrade" class="user-info">
-    <p><strong>Poziția:</strong> {{userPosition}} (Media corespunzătoare: {{userGrade | number:'1.2-2'}})</p>
+    <p><strong>Pozitia:</strong> {{userPosition}} (Media corespunzatoare: {{userGrade | number:'1.2-2'}})</p>
   </div>
 
   <div *ngIf="isLoading" class="loading">
-    Se încarcă datele...
+    Se incarca datele...
   </div>
 
   <div *ngIf="analyzed && !isLoading" class="results">
     
     <div class="section">
-      <h2>Specializări complet ocupate</h2>
+      <h2>Specializari complet ocupate</h2>
       <table *ngIf="completOcupate.length > 0; else noDataComplete">
         <thead>
           <tr>
             <th>Liceu + Specializare</th>
-            <th>Poziții ocupate</th>
+            <th>Pozitii ocupate</th>
             <th>Locuri ocupate</th>
             <th>Locuri libere</th>
             <th>% Ocupare</th>
@@ -57,17 +57,17 @@
         </tbody>
       </table>
       <ng-template #noDataComplete>
-        <p>Nu există specializări complet ocupate pentru această poziție.</p>
+        <p>Nu exista specializari complet ocupate pentru aceasta pozitie.</p>
       </ng-template>
     </div>
 
     <div class="section">
-      <h2>Specializări parțial ocupate</h2>
+      <h2>Specializari partial ocupate</h2>
       <table *ngIf="partialOcupate.length > 0; else noDataPartial">
         <thead>
           <tr>
             <th>Liceu + Specializare</th>
-            <th>Poziții ocupate</th>
+            <th>Pozitii ocupate</th>
             <th>Locuri ocupate</th>
             <th>Locuri libere</th>
             <th>% Ocupare</th>
@@ -90,17 +90,17 @@
         </tbody>
       </table>
       <ng-template #noDataPartial>
-        <p>Nu există specializări parțial ocupate pentru această poziție.</p>
+        <p>Nu exista specializari partial ocupate pentru aceasta pozitie.</p>
       </ng-template>
     </div>
 
     <div class="section">
-      <h2>Specializări cu locuri disponibile</h2>
+      <h2>Specializari cu locuri disponibile</h2>
       <table *ngIf="neocupate.length > 0; else noDataEmpty">
         <thead>
           <tr>
             <th>Liceu + Specializare</th>
-            <th>Poziții ocupate</th>
+            <th>Pozitii ocupate</th>
             <th>Locuri ocupate</th>
             <th>Locuri libere</th>
             <th>% Ocupare</th>
@@ -123,7 +123,7 @@
         </tbody>
       </table>
       <ng-template #noDataEmpty>
-        <p>Nu există specializări cu locuri disponibile pentru această poziție.</p>
+        <p>Nu exista specializari cu locuri disponibile pentru aceasta pozitie.</p>
       </ng-template>
     </div>
 

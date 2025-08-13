@@ -96,7 +96,6 @@ export class GradOcupareComponent implements OnInit {
       }))
       .filter(candidate => !isNaN(candidate.admissionGrade) && candidate.admissionGrade > 0);
 
-    // Sort by admission grade (highest first) and assign positions
     validCandidates.sort((a, b) => b.admissionGrade - a.admissionGrade);
     validCandidates.forEach((candidate, index) => {
       candidate.overallPosition = index + 1;
@@ -197,14 +196,13 @@ export class GradOcupareComponent implements OnInit {
       specializationMap.get(key)!.push(candidate);
     });
 
-    // Process each school/specialization/language combination
     this.schoolSpecializations = Array.from(specializationMap.entries()).map(([key, candidates]) => {
       const [school, specialization, language] = key.split('|');
       
       // Sort candidates by position (lowest position = best, highest position = worst)
       const sortedCandidates = candidates.sort((a, b) => a.overallPosition - b.overallPosition);
-      const bestCandidate = sortedCandidates[0]; // lowest position (best)
-      const worstCandidate = sortedCandidates[sortedCandidates.length - 1]; // highest position (worst)
+      const bestCandidate = sortedCandidates[0]; 
+      const worstCandidate = sortedCandidates[sortedCandidates.length - 1];
       
       return {
         school,
@@ -214,10 +212,10 @@ export class GradOcupareComponent implements OnInit {
         minIndex: bestCandidate.overallPosition,
         maxIndex: worstCandidate.overallPosition,
         totalSlots: candidates.length,
-        occupiedSlots: 0, // Will be calculated during analysis
-        freeSlots: 0, // Will be calculated during analysis
-        occupancyRate: 0, // Will be calculated during analysis
-        lastAdmittedGrade: worstCandidate.admissionGrade, // grade of worst position (last admitted)
+        occupiedSlots: 0,
+        freeSlots: 0, 
+        occupancyRate: 0, 
+        lastAdmittedGrade: worstCandidate.admissionGrade,
         occupancyStatus: 'complet' as const
       };
     }).sort((a, b) => a.minIndex - b.minIndex);
@@ -239,7 +237,6 @@ export class GradOcupareComponent implements OnInit {
     this.neocupate = [];
 
     this.schoolSpecializations.forEach(spec => {
-      // Find candidates for this specific school+specialization+language combination
       const candidatesAtSpecialization = this.allCandidates.filter(c => 
         c.cleanSchool === spec.school && 
         c.cleanSpecialization === spec.specialization && 
@@ -253,21 +250,17 @@ export class GradOcupareComponent implements OnInit {
       
       // Determine occupancy status based on user position vs index range
       if (this.userPosition! > spec.maxIndex) {
-        // User position is worse than worst in specialization - no chance
         spec.occupancyStatus = 'complet';
         this.completOcupate.push(spec);
       } else if (this.userPosition! > spec.minIndex && this.userPosition! <= spec.maxIndex) {
-        // User position is within range - partial chance
         spec.occupancyStatus = 'partial';
         this.partialOcupate.push(spec);
       } else {
-        // User position is better than best in specialization - guaranteed
         spec.occupancyStatus = 'neocupat';
         this.neocupate.push(spec);
       }
     });
 
-    // Sort by occupancy rate
     this.neocupate.sort((a, b) => a.occupancyRate - b.occupancyRate);
     this.partialOcupate.sort((a, b) => a.occupancyRate - b.occupancyRate);
     this.completOcupate.sort((a, b) => b.occupancyRate - a.occupancyRate);
