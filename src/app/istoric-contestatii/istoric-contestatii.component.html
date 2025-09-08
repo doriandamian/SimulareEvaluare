@@ -1,9 +1,12 @@
-<div class="header">
-  <button class="back-button" (click)="goBack()">← Inapoi</button>
+<div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+  <button class="back-button" (click)="goBack()">{{ translations[language].back }}</button>
+  <button class="lang-switch" (click)="toggleLanguage()" style="margin-left:auto; min-width: 48px; padding: 6px 16px; border-radius: 20px; border: 1px solid #007bff; background: #f8f9fa; color: #007bff; font-weight: bold; cursor: pointer;">
+    {{ language === 'ro' ? 'EN' : 'RO' }}
+  </button>
 </div>
-<h1>Analiza contestatii la romana</h1>
+<h1>{{ translations[language].title }}</h1>
 <div class="stats">
-  <label for="countySelect">Alege județul:</label>
+  <label for="countySelect">{{ translations[language].selectCounty }}</label>
   <select id="countySelect" [(ngModel)]="selectedCounty" (change)="onCountyChange()">
     <option *ngFor="let code of counties" [value]="code">
       {{ countyNames[code] }}
@@ -14,10 +17,10 @@
 
 <div class="graph-switch">
   <label (click)="selectedGraph = 'note'; onGraphSwitch()" [class.selected]="selectedGraph === 'note'">
-    Evoluția notelor
+    {{ translations[language].noteGraph }}
   </label>
   <label (click)="selectedGraph = 'deviatie'; onGraphSwitch()" [class.selected]="selectedGraph === 'deviatie'">
-    Devierea față de nota inițială
+    {{ translations[language].devGraph }}
   </label>
 </div>
 

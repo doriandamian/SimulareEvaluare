@@ -1,3 +1,6 @@
 <div class="chart-card">
+  <ng-container *ngIf="translations && translations[language]">
+    <h5>{{ translations[language].title || 'Distribuție note' }}</h5>
+  </ng-container>
   <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions"></canvas>
 </div>

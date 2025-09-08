@@ -1,6 +1,7 @@
+<!-- Removed legacy Romanian block, only translation-based block remains -->
 <div class="summary-container">
   <span class="summary-text">
-    Total elevi selectati: <strong>{{ total }}</strong> | Media generala:
-    <strong>{{ media | number : "1.2-2" }}</strong>
+    {{ translations[language].total }}: <strong>{{ total }}</strong> | {{ translations[language].media }}:
+    <strong>{{ media | number : '1.2-2' }}</strong>
   </span>
 </div>

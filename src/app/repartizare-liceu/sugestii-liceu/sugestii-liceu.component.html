@@ -1,5 +1,6 @@
-<div *ngIf="candidati.length">
-  <h5 class="mt-3">Licee potrivite pentru media ta:</h5>
+<!-- Removed legacy Romanian block, only translation-based blocks remain -->
+<ng-container *ngIf="candidati.length">
+  <h5 class="mt-3">{{ translations[language].title }}:</h5>
   <div *ngFor="let c of candidati" class="card mt-2">
     <div class="card-body">
       <div [innerHTML]="c.h"></div>
@@ -9,4 +10,7 @@
       </div>
     </div>
   </div>
-</div>
+</ng-container>
+<ng-container *ngIf="!candidati.length">
+  <h5 class="mt-3">{{ translations[language].noSuggestions }}</h5>
+</ng-container>

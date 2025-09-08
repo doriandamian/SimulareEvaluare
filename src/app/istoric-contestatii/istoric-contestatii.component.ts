@@ -46,6 +46,27 @@ interface Note {
 })
 
 export class IstoricContestatiiComponent implements OnInit {
+  language: 'ro' | 'en' = 'ro';
+  translations = {
+    ro: {
+      back: '← Inapoi',
+      title: 'Analiza contestatii la romana',
+      selectCounty: 'Alege județul:',
+      noteGraph: 'Evoluția notelor',
+      devGraph: 'Devierea față de nota inițială',
+    },
+    en: {
+      back: '← Back',
+      title: 'Romanian Challenge Analysis',
+      selectCounty: 'Select county:',
+      noteGraph: 'Grade evolution',
+      devGraph: 'Deviation from initial grade',
+    }
+  };
+
+  toggleLanguage() {
+    this.language = this.language === 'ro' ? 'en' : 'ro';
+  }
   private chartNoteInstance: Chart | null = null;
   private chartDeviatieInstance: Chart | null = null;
   statisticiHtml = '';

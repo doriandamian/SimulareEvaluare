@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -51,7 +53,50 @@ interface SchoolSpecializationOccupancy {
   templateUrl: './grad-ocupare.component.html',
   styleUrl: './grad-ocupare.component.scss',
 })
-export class GradOcupareComponent implements OnInit {
+export class GradOcupareComponent implements OnInit, OnDestroy {
+  language: 'ro' | 'en' = 'ro';
+  translations = {
+    ro: {
+      back: '← Inapoi',
+      title: 'Analiza Grad Ocupare Specializari 2024',
+      inputLabel: 'Introduceti pozitia (ex: 500):',
+      analyze: 'Analizeaza',
+      position: 'Pozitia:',
+      grade: 'Media corespunzatoare:',
+      loading: 'Se incarca datele...',
+      completTitle: 'Specializari complet ocupate',
+      partialTitle: 'Specializari partial ocupate',
+      noDataComplete: 'Nu exista specializari complet ocupate pentru aceasta pozitie.',
+      noDataPartial: 'Nu exista specializari partial ocupate pentru aceasta pozitie.',
+      schoolSpec: 'Liceu + Specializare',
+      index: 'Pozitii ocupate',
+      occupied: 'Locuri ocupate',
+      free: 'Locuri libere',
+      rate: '% Ocupare',
+      lastGrade: 'Ultima medie',
+    },
+    en: {
+      back: '← Back',
+      title: 'Specialization Occupancy Analysis 2024',
+      inputLabel: 'Enter position (e.g., 500):',
+      analyze: 'Analyze',
+      position: 'Position:',
+      grade: 'Corresponding grade:',
+      loading: 'Loading data...',
+      completTitle: 'Fully occupied specializations',
+      partialTitle: 'Partially occupied specializations',
+      noDataComplete: 'No fully occupied specializations for this position.',
+      noDataPartial: 'No partially occupied specializations for this position.',
+      schoolSpec: 'School + Specialization',
+      index: 'Occupied positions',
+      occupied: 'Occupied slots',
+      free: 'Free slots',
+      rate: 'Occupancy %',
+      lastGrade: 'Last admitted grade',
+    }
+  };
+
+
   userPosition: number | null = null;
   userGrade: number | null = null;
   allCandidates: ProcessedCandidate[] = [];
@@ -61,11 +106,25 @@ export class GradOcupareComponent implements OnInit {
   neocupate: SchoolSpecializationOccupancy[] = [];
   isLoading = false;
   analyzed = false;
+  private langSub?: Subscription;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private languageService: LanguageService
+  ) { }
 
   ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
     this.loadCandidateData();
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
+
+  toggleLanguage() {
+    this.languageService.toggleLanguage();
   }
 
   loadCandidateData() {

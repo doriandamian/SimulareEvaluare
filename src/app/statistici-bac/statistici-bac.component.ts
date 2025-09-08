@@ -13,6 +13,23 @@ import { BacDataService, CountyOption } from './services/bac-data.service';
   styleUrl: './statistici-bac.component.scss',
 })
 export class StatisticiBACComponent {
+  language: 'ro' | 'en' = 'ro';
+  translations = {
+    ro: {
+      back: '← Inapoi',
+      title: 'Bacalaureat 2025',
+      chartTitle: 'Distributia mediilor pe intervale',
+    },
+    en: {
+      back: '← Back',
+      title: 'Baccalaureate 2025',
+      chartTitle: 'Distribution of grades by interval',
+    }
+  };
+
+  toggleLanguage() {
+    this.language = this.language === 'ro' ? 'en' : 'ro';
+  }
   rawData: any[][] = [];
   filtered: any[][] = [];
 

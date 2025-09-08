@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 import { DataService } from '../repartizare-liceu/services/data.service';
 import { Candidate } from '../repartizare-liceu/models/candidate.model';
 import { SugestiiLiceuComponent } from './sugestii-liceu/sugestii-liceu.component';
@@ -18,13 +20,27 @@ import { CommonModule } from '@angular/common';
   ],
   standalone: true,
 })
-export class RepartizareLiceuComponent {
+export class RepartizareLiceuComponent implements OnInit, OnDestroy {
   candidati: Candidate[] = [];
   sugestii: Candidate[] = [];
   statistici: any = {};
   selectedYear = 2024;
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private languageService: LanguageService) { }
+
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
+
+  toggleLanguage() {
+    this.languageService.toggleLanguage();
+  }
 
   onSearch(data: { year: number; madm: number; mabs?: number }) {
     this.selectedYear = data.year;

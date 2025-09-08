@@ -1,8 +1,9 @@
+<!-- Removed legacy Romanian block, only translation-based block remains -->
 <div class="filters-container">
   <div class="filter-group">
-    <label class="filter-label">Județ:</label>
+    <label class="filter-label">{{ translations[language].county }}:</label>
     <select class="filter-select county-select" [(ngModel)]="selectedCounty" (change)="onCountyChange()">
-      <option value="">Selectează județul</option>
+      <option value="">{{ translations[language].county }}</option>
       <option *ngFor="let county of counties" [value]="county.code">
         {{ county.name }}
       </option>
@@ -10,19 +11,19 @@
   </div>
 
   <div class="filter-group">
-    <label class="filter-label">Unitate:</label>
+    <label class="filter-label">{{ translations[language].school }}:</label>
     <select class="filter-select unitate-select" [(ngModel)]="selectedSchool" (change)="onSchoolChange()"
       [disabled]="!selectedCounty">
-      <option value="Toate">Toate</option>
+      <option value="Toate">{{ translations[language].all }}</option>
       <option *ngFor="let u of schools" [value]="u">{{ u }}</option>
     </select>
   </div>
 
   <div class="filter-group">
-    <label class="filter-label">Specializare:</label>
+    <label class="filter-label">{{ translations[language].specialisation }}:</label>
     <select class="filter-select specializare-select" [(ngModel)]="selectedSpecialisation" (change)="onChange()"
       [disabled]="!selectedCounty">
-      <option value="Toate">Toate</option>
+      <option value="Toate">{{ translations[language].all }}</option>
       <option *ngFor="let s of filteredSpecialisations" [value]="s">
         {{ s }}
       </option>

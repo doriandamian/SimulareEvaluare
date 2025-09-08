@@ -1,16 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartType, ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { LanguageService } from '../../../services/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chart',
   standalone: true,
-  imports: [BaseChartDirective, FormsModule],
+  imports: [BaseChartDirective, FormsModule, CommonModule],
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.scss',
 })
-export class ChartComponent {
+export class ChartComponent implements OnInit, OnDestroy {
   @Input() set data(value: number[]) {
     this.chartData = {
       labels: this.chartLabels,
@@ -58,24 +61,30 @@ export class ChartComponent {
       legend: {
         position: 'bottom',
         labels: {
-          padding: 20,
-          usePointStyle: true,
-          font: {
-            size: 14,
-          },
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => {
-            const data = context.dataset.data as number[];
-            const total = data.reduce((a, b) => (a || 0) + (b || 0), 0);
-            const value = context.parsed as number;
-            const percentage = ((value / total) * 100).toFixed(1);
-            return `${context.label}: ${value} elevi (${percentage}%)`;
-          },
+          color: '#333',
         },
       },
     },
   };
+
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
+  translations = {
+    ro: {
+      title: 'Distribuție note',
+    },
+    en: {
+      title: 'Grade distribution',
+    }
+  };
+
+  constructor(private languageService: LanguageService) {}
+
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
 }
