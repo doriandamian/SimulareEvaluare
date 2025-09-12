@@ -1,7 +1,11 @@
 <div class="container p-4">
-  <div class="header">
-    <button class="back-button" (click)="goBack()">← Inapoi</button>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+    <button class="back-button" (click)="goBack()">{{ translations[language].back }}</button>
+    <button class="lang-switch" (click)="toggleLanguage()" style="margin-left:auto; min-width: 48px; padding: 6px 16px; border-radius: 20px; border: 1px solid #007bff; background: #f8f9fa; color: #007bff; font-weight: bold; cursor: pointer;">
+      {{ language === 'ro' ? 'EN' : 'RO' }}
+    </button>
   </div>
+  <h1 class="title">{{ translations[language].title }}</h1>
   <app-repartizare-form (search)="onSearch($event)"></app-repartizare-form>
   <app-statistics-panel [year]="selectedYear" [statistici]="statistici"></app-statistics-panel>
   <app-sugestii-liceu [candidati]="sugestii"></app-sugestii-liceu>

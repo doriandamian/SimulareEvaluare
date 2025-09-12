@@ -46,6 +46,27 @@ interface Note {
 })
 
 export class IstoricContestatiiComponent implements OnInit {
+  language: 'ro' | 'en' = 'ro';
+  translations = {
+    ro: {
+      back: '← Inapoi',
+      title: 'Analiza contestatii la romana',
+      selectCounty: 'Alege județul:',
+      noteGraph: 'Evoluția notelor',
+      devGraph: 'Devierea față de nota inițială',
+    },
+    en: {
+      back: '← Back',
+      title: 'Romanian Challenge Analysis',
+      selectCounty: 'Select county:',
+      noteGraph: 'Grade evolution',
+      devGraph: 'Deviation from initial grade',
+    }
+  };
+
+  toggleLanguage() {
+    this.language = this.language === 'ro' ? 'en' : 'ro';
+  }
   private chartNoteInstance: Chart | null = null;
   private chartDeviatieInstance: Chart | null = null;
   statisticiHtml = '';
@@ -127,14 +148,23 @@ export class IstoricContestatiiComponent implements OnInit {
         ).toFixed(3)
         : '0';
 
-    this.statisticiHtml = `
-      <p>Total contestații${this.filterInterval ? ' (8 ≤ nota inițială ≤ 9)' : ''
-      }: <strong>${total}</strong></p>
-      <p>Note crescute: <strong>${crescut}</strong></p>
-      <p>Note scazute: <strong>${scazut}</strong></p>
-      <p>Fara modificare: <strong>${neschimbat}</strong></p>
-      <p>Diferenta medie: <strong>${mediaDiferenta}</strong> puncte</p>
-    `;
+    if (this.language === 'en') {
+      this.statisticiHtml = `
+        <p>Total challenges${this.filterInterval ? ' (8 ≤ initial grade ≤ 9)' : ''}: <strong>${total}</strong></p>
+        <p>Grades increased: <strong>${crescut}</strong></p>
+        <p>Grades decreased: <strong>${scazut}</strong></p>
+        <p>No change: <strong>${neschimbat}</strong></p>
+        <p>Average difference: <strong>${mediaDiferenta}</strong> points</p>
+      `;
+    } else {
+      this.statisticiHtml = `
+        <p>Total contestații${this.filterInterval ? ' (8 ≤ nota inițială ≤ 9)' : ''}: <strong>${total}</strong></p>
+        <p>Note crescute: <strong>${crescut}</strong></p>
+        <p>Note scazute: <strong>${scazut}</strong></p>
+        <p>Fara modificare: <strong>${neschimbat}</strong></p>
+        <p>Diferenta medie: <strong>${mediaDiferenta}</strong> puncte</p>
+      `;
+    }
 
     this.renderSelectedChart();
   }

@@ -1,30 +1,33 @@
 <div class="home-container">
-  <div class="header">
-    <button class="back-button" (click)="goBack()">← Inapoi</button>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+    <button class="back-button" (click)="goBack()">{{ translations[language].back }}</button>
+    <button class="lang-switch" (click)="toggleLanguage()" style="margin-left:auto; min-width: 48px; padding: 6px 16px; border-radius: 20px; border: 1px solid #007bff; background: #f8f9fa; color: #007bff; font-weight: bold; cursor: pointer;">
+      {{ language === 'ro' ? 'EN' : 'RO' }}
+    </button>
   </div>
-  <h1 class="title">Statistici Evaluare Nationala</h1>
+  <h1 class="title">{{ translations[language].title }}</h1>
 
   <div class="card-container grid">
     <div class="card left" (click)="goTo('repartizare')">
-      <h2>Repartizare Licee</h2>
-      <p>Simulează repartizarea elevilor în liceele din România.</p>
+      <h2>{{ translations[language].repartizare }}</h2>
+      <p>{{ translations[language].repartizareDesc }}</p>
     </div>
 
     <div class="card right" (click)="goTo('ultimul-admis')">
-      <h2>Ultimul Admis</h2>
-      <p>Vezi indexul ultimului candidat admis la fiecare specializare.</p>
+      <h2>{{ translations[language].ultimulAdmis }}</h2>
+      <p>{{ translations[language].ultimulAdmisDesc }}</p>
     </div>
 
     <div class="card left" (click)="goTo('contestatii')">
-      <h2>Analiza contestatii</h2>
+      <h2>{{ translations[language].contestatii }}</h2>
       <p>
-        Istoricul contestatiilor la proba scrisa la limba si literatura romana
+        {{ translations[language].contestatiiDesc }}
       </p>
     </div>
 
     <div class="card right" (click)="goTo('grad-ocupare')">
-      <h2>Grad Ocupare</h2>
-      <p>Afiseaza care specializari sunt ocupate si in ce proportie.</p>
+      <h2>{{ translations[language].gradOcupare }}</h2>
+      <p>{{ translations[language].gradOcupareDesc }}</p>
     </div>
   </div>
 </div>

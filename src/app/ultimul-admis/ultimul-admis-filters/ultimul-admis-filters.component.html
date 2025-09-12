@@ -1,10 +1,10 @@
 <div class="filters-container">
   <div class="filters-row">
     <div class="filter-group">
-      <label for="school-select">Liceu:</label>
+      <label for="school-select">{{ translations[language].school }}:</label>
       <select id="school-select" [(ngModel)]="selectedFilters.school" (change)="onSchoolChange()"
         class="filter-select school-select">
-        <option value="">-- Toate liceele --</option>
+        <option value="">{{ translations[language].allSchools }}</option>
         <option *ngFor="let school of schools" [value]="school">
           {{ school }}
         </option>
@@ -12,11 +12,11 @@
     </div>
 
     <div class="filter-group">
-      <label for="specialization-select">Specializare:</label>
+      <label for="specialization-select">{{ translations[language].specialization }}:</label>
       <select id="specialization-select" [(ngModel)]="selectedFilters.specialization"
         (change)="onSpecializationChange()" class="filter-select specialization-select"
         [disabled]="!selectedFilters.school">
-        <option value="">-- Selecteaza specializarea --</option>
+        <option value="">{{ translations[language].selectSpec }}</option>
         <option *ngFor="let spec of specializations" [value]="spec">
           {{ spec }}
         </option>
@@ -26,13 +26,13 @@
     <div class="filter-group">
       <button type="button" (click)="addCombination()" class="add-button"
         [disabled]="!selectedFilters.school || !selectedFilters.specialization">
-        Adauga la grafic
+        {{ translations[language].add }}
       </button>
     </div>
 
     <div class="filter-group">
       <button type="button" (click)="resetFilters()" class="reset-button">
-        Reseteaza tot
+        {{ translations[language].reset }}
       </button>
     </div>
   </div>

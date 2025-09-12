@@ -1,39 +1,42 @@
 <div class="grad-ocupare-container">
-  <div class="header">
-    <button class="back-button" (click)="goBack()">← Inapoi</button>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+    <button class="back-button" (click)="goBack()">{{ translations[language].back }}</button>
+    <button class="lang-switch" (click)="toggleLanguage()" style="margin-left:auto; min-width: 48px; padding: 6px 16px; border-radius: 20px; border: 1px solid #007bff; background: #f8f9fa; color: #007bff; font-weight: bold; cursor: pointer;">
+      {{ language === 'ro' ? 'EN' : 'RO' }}
+    </button>
   </div>
 
-  <h1>Analiza Grad Ocupare Specializari 2024</h1>
+  <h1>{{ translations[language].title }}</h1>
 
   <div class="input-section">
-    <label for="userPosition">Introduceti pozitia (ex: 500):</label>
+    <label for="userPosition">{{ translations[language].inputLabel }}</label>
     <input type="number" id="userPosition" [(ngModel)]="userPosition" placeholder="500" min="1" />
     <button (click)="analyzeOccupancy()" [disabled]="!userPosition || isLoading">
-      Analizeaza
+      {{ translations[language].analyze }}
     </button>
   </div>
 
   <div *ngIf="analyzed && userGrade" class="user-info">
     <p>
-      <strong>Pozitia:</strong> {{ userPosition }} (Media corespunzatoare:
+      <strong>{{ translations[language].position }}</strong> {{ userPosition }} ({{ translations[language].grade }}
       {{ userGrade | number : "1.2-2" }})
     </p>
   </div>
 
-  <div *ngIf="isLoading" class="loading">Se incarca datele...</div>
+  <div *ngIf="isLoading" class="loading">{{ translations[language].loading }}</div>
 
   <div *ngIf="analyzed && !isLoading" class="results">
     <div class="section">
-      <h2>Specializari complet ocupate</h2>
+      <h2>{{ translations[language].completTitle }}</h2>
       <table *ngIf="completOcupate.length > 0; else noDataComplete">
         <thead>
           <tr>
-            <th>Liceu + Specializare</th>
-            <th>Pozitii ocupate</th>
-            <th>Locuri ocupate</th>
-            <th>Locuri libere</th>
-            <th>% Ocupare</th>
-            <th>Ultima medie</th>
+            <th>{{ translations[language].schoolSpec }}</th>
+            <th>{{ translations[language].index }}</th>
+            <th>{{ translations[language].occupied }}</th>
+            <th>{{ translations[language].free }}</th>
+            <th>{{ translations[language].rate }}</th>
+            <th>{{ translations[language].lastGrade }}</th>
           </tr>
         </thead>
         <tbody>
@@ -52,21 +55,21 @@
         </tbody>
       </table>
       <ng-template #noDataComplete>
-        <p>Nu exista specializari complet ocupate pentru aceasta pozitie.</p>
+        <p>{{ translations[language].noDataComplete }}</p>
       </ng-template>
     </div>
 
     <div class="section">
-      <h2>Specializari partial ocupate</h2>
+      <h2>{{ translations[language].partialTitle }}</h2>
       <table *ngIf="partialOcupate.length > 0; else noDataPartial">
         <thead>
           <tr>
-            <th>Liceu + Specializare</th>
-            <th>Pozitii ocupate</th>
-            <th>Locuri ocupate</th>
-            <th>Locuri libere</th>
-            <th>% Ocupare</th>
-            <th>Ultima medie</th>
+            <th>{{ translations[language].schoolSpec }}</th>
+            <th>{{ translations[language].index }}</th>
+            <th>{{ translations[language].occupied }}</th>
+            <th>{{ translations[language].free }}</th>
+            <th>{{ translations[language].rate }}</th>
+            <th>{{ translations[language].lastGrade }}</th>
           </tr>
         </thead>
         <tbody>
@@ -85,21 +88,21 @@
         </tbody>
       </table>
       <ng-template #noDataPartial>
-        <p>Nu exista specializari partial ocupate pentru aceasta pozitie.</p>
+        <p>{{ translations[language].noDataPartial }}</p>
       </ng-template>
     </div>
 
     <div class="section">
-      <h2>Specializari fara locuri ocupate</h2>
+      <h2>{{ language === 'ro' ? 'Specializari fara locuri ocupate' : 'Specializations with no occupied slots' }}</h2>
       <table *ngIf="neocupate.length > 0; else noDataEmpty">
         <thead>
           <tr>
-            <th>Liceu + Specializare</th>
-            <th>Pozitii ocupate</th>
-            <th>Locuri ocupate</th>
-            <th>Locuri libere</th>
-            <th>% Ocupare</th>
-            <th>Ultima medie</th>
+            <th>{{ translations[language].schoolSpec }}</th>
+            <th>{{ translations[language].index }}</th>
+            <th>{{ translations[language].occupied }}</th>
+            <th>{{ translations[language].free }}</th>
+            <th>{{ translations[language].rate }}</th>
+            <th>{{ translations[language].lastGrade }}</th>
           </tr>
         </thead>
         <tbody>
@@ -119,7 +122,7 @@
       </table>
       <ng-template #noDataEmpty>
         <p>
-          Nu exista specializari cu locuri disponibile pentru aceasta pozitie.
+          {{ language === 'ro' ? 'Nu exista specializari cu locuri disponibile pentru aceasta pozitie.' : 'No specializations with available slots for this position.' }}
         </p>
       </ng-template>
     </div>

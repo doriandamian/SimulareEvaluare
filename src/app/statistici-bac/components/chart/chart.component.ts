@@ -1,16 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartType, ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { LanguageService } from '../../../services/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chart',
   standalone: true,
-  imports: [BaseChartDirective, FormsModule],
+  imports: [BaseChartDirective, FormsModule, CommonModule],
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.scss',
 })
-export class ChartComponent {
+export class ChartComponent implements OnInit, OnDestroy {
   @Input() set data(value: number[]) {
     this.chartData = {
       labels: this.chartLabels,
@@ -37,7 +40,11 @@ export class ChartComponent {
     datasets: [],
   };
 
-  chartLabels = ['Neprezentat', 'Respins', '6-7', '7-8', '8-9', '9-10'];
+  chartLabelsRo = ['Neprezentat', 'Respins', '6-7', '7-8', '8-9', '9-10'];
+  chartLabelsEn = ['Absent', 'Failed', '6-7', '7-8', '8-9', '9-10'];
+  get chartLabels() {
+    return this.language === 'en' ? this.chartLabelsEn : this.chartLabelsRo;
+  }
   chartType: ChartType = 'pie';
   chartColors = [
     {
@@ -58,24 +65,59 @@ export class ChartComponent {
       legend: {
         position: 'bottom',
         labels: {
-          padding: 20,
-          usePointStyle: true,
-          font: {
-            size: 14,
-          },
+          color: '#333',
+          generateLabels: (chart) => {
+            const data = chart.data;
+            const labels = this.chartLabels;
+            return labels.map((label, i) => ({
+              text: label,
+              fillStyle: (Array.isArray(data.datasets[0]?.backgroundColor) ? (data.datasets[0]?.backgroundColor as string[])[i] : undefined) || '#ccc',
+              strokeStyle: '#fff',
+              lineWidth: 1,
+              hidden: false,
+              index: i
+            }));
+          }
         },
       },
       tooltip: {
         callbacks: {
           label: (context) => {
-            const data = context.dataset.data as number[];
-            const total = data.reduce((a, b) => (a || 0) + (b || 0), 0);
-            const value = context.parsed as number;
-            const percentage = ((value / total) * 100).toFixed(1);
-            return `${context.label}: ${value} elevi (${percentage}%)`;
-          },
-        },
-      },
+            const label = context.label || '';
+            const value = context.parsed;
+            return `${label}: ${value} ${this.language === 'en' ? 'candidates' : 'candidați'}`;
+          }
+        }
+      }
     },
   };
+
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
+  translations = {
+    ro: {
+      title: 'Distribuție note',
+    },
+    en: {
+      title: 'Grade distribution',
+    }
+  };
+
+  get chartTitle(): string {
+    return this.translations[this.language].title;
+  }
+
+  constructor(private languageService: LanguageService) {}
+
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => {
+      this.language = lang;
+      // Force chart to update labels/legend/tooltips on language change
+      this.chartData = { ...this.chartData, labels: this.chartLabels };
+    });
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
 }

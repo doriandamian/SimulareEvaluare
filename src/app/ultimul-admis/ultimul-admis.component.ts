@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
   EnDataService,
@@ -24,7 +26,21 @@ import { UltimulAdmisChartComponent } from './ultimul-admis-chart/ultimul-admis-
   templateUrl: './ultimul-admis.component.html',
   styleUrl: './ultimul-admis.component.scss',
 })
-export class UltimulAdmisComponent implements OnInit {
+export class UltimulAdmisComponent implements OnInit, OnDestroy {
+  translations = {
+    ro: {
+      back: '← Inapoi',
+      title: 'Ultimul Admis la Liceu',
+      desc: 'Indexul ultimului candidat admis la fiecare specializare in parte',
+    },
+    en: {
+      back: '← Back',
+      title: 'Last Admitted to High School',
+      desc: 'Index of the last admitted candidate for each specialization',
+    }
+  };
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
   isLoading = false;
   allData: SchoolSpecialization[] = [];
   filteredData: SchoolSpecialization[] = [];
@@ -37,10 +53,19 @@ export class UltimulAdmisComponent implements OnInit {
     selectedCombinations: [],
   };
 
-  constructor(private enDataService: EnDataService) { }
+  constructor(private enDataService: EnDataService, private languageService: LanguageService) { }
 
-  async ngOnInit() {
-    await this.loadData();
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
+    this.loadData();
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
+
+  toggleLanguage() {
+    this.languageService.toggleLanguage();
   }
 
   async loadData() {

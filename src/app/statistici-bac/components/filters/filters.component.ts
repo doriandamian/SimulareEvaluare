@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CountyOption } from '../../services/bac-data.service';
+import { LanguageService } from '../../../services/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-filters',
@@ -10,7 +12,30 @@ import { CountyOption } from '../../services/bac-data.service';
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.scss',
 })
-export class FiltersComponent {
+export class FiltersComponent implements OnInit, OnDestroy {
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
+  translations = {
+    ro: {
+      county: 'Județ',
+      school: 'Școală',
+      specialisation: 'Specializare',
+      all: 'Toate',
+    },
+    en: {
+      county: 'County',
+      school: 'School',
+      specialisation: 'Specialization',
+      all: 'All',
+    }
+  };
+  constructor(private languageService: LanguageService) {}
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
+  }
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
   @Input() counties: CountyOption[] = [];
   @Input() schools: string[] = [];
   @Input() rawData: any[][] = [];

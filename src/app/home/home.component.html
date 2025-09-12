@@ -1,15 +1,20 @@
 <div class="home-container">
-  <h1 class="title">Simulare Repartizare Licee</h1>
+  <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding: 8px 0;">
+    <button (click)="toggleLanguage()" style="min-width: 48px; padding: 6px 16px; border-radius: 20px; border: 1px solid #007bff; background: #f8f9fa; color: #007bff; font-weight: bold; cursor: pointer;">
+      {{ language === 'ro' ? 'EN' : 'RO' }}
+    </button>
+  </div>
+  <h1 class="title">{{ translations[language].title }}</h1>
 
   <div class="card-container">
     <div class="card" (click)="goTo('statisticien')">
-      <h2>Statistici EN</h2>
-      <p>Exploreaza datele si graficele Evaluarii Nationale.</p>
+      <h2>{{ translations[language].statisticiEN }}</h2>
+      <p>{{ translations[language].statisticiENDesc }}</p>
     </div>
 
     <div class="card" (click)="goTo('statistici')">
-      <h2>Statistici Bac 2025</h2>
-      <p>Exploreaza datele si graficele examenului de Bacalaureat 2025.</p>
+      <h2>{{ translations[language].statisticiBac }}</h2>
+      <p>{{ translations[language].statisticiBacDesc }}</p>
     </div>
   </div>
 </div>
