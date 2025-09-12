@@ -18,16 +18,18 @@ export class SugestiiLiceuComponent implements OnInit, OnDestroy {
   translations = {
     ro: {
       title: 'Sugestii liceu',
-      noSuggestions: 'Nu există sugestii pentru criteriile selectate.'
+      noSuggestions: 'Nu există sugestii pentru criteriile selectate.',
+      madmLabel: 'Media de admitere',
     },
     en: {
       title: 'High School Suggestions',
-      noSuggestions: 'No suggestions for the selected criteria.'
+      noSuggestions: 'No suggestions for the selected criteria.',
+      madmLabel: 'Admission average',
     }
   };
   constructor(private languageService: LanguageService) {}
   ngOnInit() {
-    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
   }
   ngOnDestroy() {
     this.langSub?.unsubscribe();

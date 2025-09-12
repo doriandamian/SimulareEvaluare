@@ -6,7 +6,7 @@
       <div [innerHTML]="c.h"></div>
       <div [innerHTML]="c.sp"></div>
       <div>
-        <small>Media de admitere: {{ c.madm }}</small>
+        <small>{{ translations[language].madmLabel || 'Media de admitere' }}: {{ c.madm }}</small>
       </div>
     </div>
   </div>

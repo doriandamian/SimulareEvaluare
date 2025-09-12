@@ -40,7 +40,11 @@ export class ChartComponent implements OnInit, OnDestroy {
     datasets: [],
   };
 
-  chartLabels = ['Neprezentat', 'Respins', '6-7', '7-8', '8-9', '9-10'];
+  chartLabelsRo = ['Neprezentat', 'Respins', '6-7', '7-8', '8-9', '9-10'];
+  chartLabelsEn = ['Absent', 'Failed', '6-7', '7-8', '8-9', '9-10'];
+  get chartLabels() {
+    return this.language === 'en' ? this.chartLabelsEn : this.chartLabelsRo;
+  }
   chartType: ChartType = 'pie';
   chartColors = [
     {
@@ -62,8 +66,29 @@ export class ChartComponent implements OnInit, OnDestroy {
         position: 'bottom',
         labels: {
           color: '#333',
+          generateLabels: (chart) => {
+            const data = chart.data;
+            const labels = this.chartLabels;
+            return labels.map((label, i) => ({
+              text: label,
+              fillStyle: (Array.isArray(data.datasets[0]?.backgroundColor) ? (data.datasets[0]?.backgroundColor as string[])[i] : undefined) || '#ccc',
+              strokeStyle: '#fff',
+              lineWidth: 1,
+              hidden: false,
+              index: i
+            }));
+          }
         },
       },
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const label = context.label || '';
+            const value = context.parsed;
+            return `${label}: ${value} ${this.language === 'en' ? 'candidates' : 'candidați'}`;
+          }
+        }
+      }
     },
   };
 
@@ -78,10 +103,18 @@ export class ChartComponent implements OnInit, OnDestroy {
     }
   };
 
+  get chartTitle(): string {
+    return this.translations[this.language].title;
+  }
+
   constructor(private languageService: LanguageService) {}
 
   ngOnInit() {
-    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => {
+      this.language = lang;
+      // Force chart to update labels/legend/tooltips on language change
+      this.chartData = { ...this.chartData, labels: this.chartLabels };
+    });
   }
 
   ngOnDestroy() {

@@ -22,12 +22,14 @@ export class RepartizareFormComponent implements OnInit, OnDestroy {
       medieAdmitere: 'Media admitere',
       medieAbsolvire: 'Media absolvire',
       search: 'Caută',
+      questionTitle: 'Ce licee ți se potrivesc?',
     },
     en: {
       year: 'Year',
       medieAdmitere: 'Admission average',
       medieAbsolvire: 'Graduation average',
       search: 'Search',
+      questionTitle: 'Which high schools fit you?',
     }
   };
   @Output() search = new EventEmitter<{
@@ -37,7 +39,7 @@ export class RepartizareFormComponent implements OnInit, OnDestroy {
   }>();
   constructor(private languageService: LanguageService) {}
   ngOnInit() {
-    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
   }
   ngOnDestroy() {
     this.langSub?.unsubscribe();

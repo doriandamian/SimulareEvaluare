@@ -27,7 +27,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   };
   constructor(private languageService: LanguageService) {}
   ngOnInit() {
-    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
   }
   ngOnDestroy() {
     this.langSub?.unsubscribe();

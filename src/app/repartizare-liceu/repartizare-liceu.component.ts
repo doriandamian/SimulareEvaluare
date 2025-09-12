@@ -27,11 +27,21 @@ export class RepartizareLiceuComponent implements OnInit, OnDestroy {
   selectedYear = 2024;
   language: 'ro' | 'en' = 'ro';
   private langSub?: Subscription;
+  translations = {
+    ro: {
+      back: '\u2190 Inapoi',
+      title: 'Repartizare Liceu',
+    },
+    en: {
+      back: '\u2190 Back',
+      title: 'High School Placement',
+    }
+  };
 
   constructor(private dataService: DataService, private languageService: LanguageService) { }
 
   ngOnInit() {
-    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
   }
 
   ngOnDestroy() {
@@ -62,8 +72,9 @@ export class RepartizareLiceuComponent implements OnInit, OnDestroy {
   }
 
   avg(values: number[]): number {
-    const valid = values.filter((v) => !isNaN(v));
-    return +(valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(2);
+    if (!values.length) return 0;
+    const sum = values.reduce((a, b) => a + b, 0);
+    return Math.round((sum / values.length) * 100) / 100;
   }
 
   goBack() {

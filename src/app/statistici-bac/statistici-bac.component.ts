@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartComponent } from './components/chart/chart.component';
 import { FiltersComponent } from './components/filters/filters.component';
 import { SummaryComponent } from './components/summary/summary.component';
 import { BacDataService, CountyOption } from './services/bac-data.service';
+import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-statistici-bac',
@@ -12,23 +14,39 @@ import { BacDataService, CountyOption } from './services/bac-data.service';
   templateUrl: './statistici-bac.component.html',
   styleUrl: './statistici-bac.component.scss',
 })
-export class StatisticiBACComponent {
+export class StatisticiBACComponent implements OnInit, OnDestroy {
   language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
   translations = {
     ro: {
-      back: '← Inapoi',
+      back: '\u2190 Inapoi',
       title: 'Bacalaureat 2025',
       chartTitle: 'Distributia mediilor pe intervale',
     },
     en: {
-      back: '← Back',
+      back: '\u2190 Back',
       title: 'Baccalaureate 2025',
       chartTitle: 'Distribution of grades by interval',
     }
   };
 
+  constructor(private dataService: BacDataService, private languageService: LanguageService) { }
+
+  ngOnInit() {
+  this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
+    this.initCounties();
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
+
   toggleLanguage() {
-    this.language = this.language === 'ro' ? 'en' : 'ro';
+    this.languageService.toggleLanguage();
+  }
+
+  async initCounties() {
+    this.counties = await this.dataService.getAvailableCounties();
   }
   rawData: any[][] = [];
   filtered: any[][] = [];
@@ -42,11 +60,7 @@ export class StatisticiBACComponent {
   currentCountyName = '';
   isLoading = false;
 
-  constructor(private dataService: BacDataService) { }
 
-  async ngOnInit() {
-    this.counties = await this.dataService.getAvailableCounties();
-  }
 
   async onCountyChanged(county: string) {
     this.currentCounty = county;

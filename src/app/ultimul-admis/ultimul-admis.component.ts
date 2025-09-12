@@ -56,7 +56,7 @@ export class UltimulAdmisComponent implements OnInit, OnDestroy {
   constructor(private enDataService: EnDataService, private languageService: LanguageService) { }
 
   ngOnInit() {
-    this.langSub = this.languageService.language$.subscribe(lang => this.language = lang);
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
     this.loadData();
   }
 

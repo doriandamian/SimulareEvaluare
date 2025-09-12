@@ -5,11 +5,15 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   ViewChild,
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { SchoolSpecialization } from '../services/en-data.service';
+import { LanguageService } from '../../services/language.service';
+import { Subscription } from 'rxjs';
 
 Chart.register(...registerables);
 
@@ -20,7 +24,7 @@ Chart.register(...registerables);
   templateUrl: './ultimul-admis-chart.component.html',
   styleUrl: './ultimul-admis-chart.component.scss',
 })
-export class UltimulAdmisChartComponent implements OnChanges {
+export class UltimulAdmisChartComponent implements OnInit, OnChanges, OnDestroy {
   @Input() allData: SchoolSpecialization[] = [];
   @Input() selectedCombinations: Array<{
     school: string;
@@ -28,7 +32,28 @@ export class UltimulAdmisChartComponent implements OnChanges {
   }> = [];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
+  translations = {
+    ro: {
+      chartTitle: 'Evoluția Indexului Ultimului Admis',
+      xAxis: 'An',
+      yAxis: 'Index',
+      noData: 'Selectează specializarea pentru a vedea evoluția indexului ultimului admis în timp.',
+      compare: (n: number) => `Comparație ${n} specializări`,
+      select: 'Selectează specializarea pentru a vedea graficul',
+    },
+    en: {
+      chartTitle: 'Last Admitted Index Evolution',
+      xAxis: 'Year',
+      yAxis: 'Index',
+      noData: 'Select a specialization to see the last admitted index evolution over time.',
+      compare: (n: number) => `Comparison of ${n} specializations`,
+      select: 'Select a specialization to see the chart',
+    }
+  };
+
+  constructor(private cdr: ChangeDetectorRef, private languageService: LanguageService) { }
 
   public chartType: ChartType = 'line';
   public chartData: ChartConfiguration['data'] = {
@@ -42,7 +67,7 @@ export class UltimulAdmisChartComponent implements OnChanges {
     plugins: {
       title: {
         display: true,
-        text: 'Evolutia Indexului Ultimului Admis',
+        text: '',
         font: {
           size: 16,
           weight: 'bold',
@@ -57,19 +82,31 @@ export class UltimulAdmisChartComponent implements OnChanges {
       x: {
         title: {
           display: true,
-          text: 'An',
+          text: '',
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Index Ultimul Admis',
+          text: '',
         },
         beginAtZero: true,
         min: 0,
       },
     },
   };
+
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => {
+      this.language = lang;
+      this.updateChartOptions();
+    });
+    this.updateChartOptions();
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.updateChart();
@@ -165,6 +202,33 @@ export class UltimulAdmisChartComponent implements OnChanges {
     }
   }
 
+  updateChartOptions() {
+    if (!this.chartOptions) return;
+    if (!this.chartOptions.plugins) this.chartOptions.plugins = {};
+    this.chartOptions.plugins.title = {
+      display: true,
+      text: this.translations[this.language].chartTitle,
+      font: { size: 16, weight: 'bold' }
+    };
+    this.chartOptions.scales = {
+      x: {
+        title: {
+          display: true,
+          text: this.translations[this.language].xAxis
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: this.translations[this.language].yAxis
+        },
+        beginAtZero: true,
+        min: 0,
+      }
+    };
+    if (this.chart) this.chart.update();
+  }
+
   get hasData(): boolean {
     return this.allData.length > 0 && this.selectedCombinations.length > 0;
   }
@@ -175,9 +239,9 @@ export class UltimulAdmisChartComponent implements OnChanges {
         const combo = this.selectedCombinations[0];
         return `${combo.school} - ${combo.specialization}`;
       } else {
-        return `Comparatie ${this.selectedCombinations.length} specializari`;
+        return this.translations[this.language].compare(this.selectedCombinations.length);
       }
     }
-    return 'Selecteaza specializarea pentru a vedea graficul';
+    return this.translations[this.language].select;
   }
 }

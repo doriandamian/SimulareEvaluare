@@ -1,11 +1,11 @@
 <div class="table-container">
   <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
-    <p>Se incarca datele...</p>
+    <p>{{ translations[language].loading }}</p>
   </div>
 
   <div *ngIf="!loading && data.length === 0" class="empty-state">
-    <p>Nu au fost gasite date pentru filtrele selectate.</p>
+    <p>{{ translations[language].empty }}</p>
   </div>
 
   <div *ngIf="!loading && data.length > 0" class="table-wrapper">
@@ -13,10 +13,10 @@
       <thead>
         <tr>
           <th (click)="sortData('school')" class="sortable">
-            Liceu {{ getSortIcon("school") }}
+            {{ translations[language].school }} {{ getSortIcon("school") }}
           </th>
           <th (click)="sortData('specialization')" class="sortable">
-            Specializare {{ getSortIcon("specialization") }}
+            {{ translations[language].specialization }} {{ getSortIcon("specialization") }}
           </th>
           <th>2022</th>
           <th>2023</th>

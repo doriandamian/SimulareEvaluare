@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { LanguageService } from '../../services/language.service';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
   SchoolSpecialization,
@@ -12,7 +14,33 @@ import {
   templateUrl: './ultimul-admis-table.component.html',
   styleUrl: './ultimul-admis-table.component.scss',
 })
-export class UltimulAdmisTableComponent {
+export class UltimulAdmisTableComponent implements OnInit, OnDestroy {
+  language: 'ro' | 'en' = 'ro';
+  private langSub?: Subscription;
+  translations = {
+    ro: {
+      school: 'Liceu',
+      specialization: 'Specializare',
+      loading: 'Se incarca datele...',
+      empty: 'Nu au fost gasite date pentru filtrele selectate.',
+    },
+    en: {
+      school: 'School',
+      specialization: 'Specialization',
+      loading: 'Loading data...',
+      empty: 'No data found for the selected filters.',
+    }
+  };
+
+  constructor(private languageService: LanguageService) {}
+
+  ngOnInit() {
+    this.langSub = this.languageService.language$.subscribe((lang: 'ro' | 'en') => this.language = lang);
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
   @Input() data: SchoolSpecialization[] = [];
   @Input() loading: boolean = false;
 
